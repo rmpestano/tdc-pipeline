@@ -1,0 +1,31 @@
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://jboss.org/schema/arquillian"
+	xsi:schemaLocation="
+        http://jboss.org/schema/arquillian
+        http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+	<defaultProtocol type="Servlet 3.0" />
+
+    <container qualifier="chameleon" default="true">
+        <configuration>
+            <property name="chameleonTarget">${arquillian.container}</property>
+        </configuration>
+    </container>
+
+	<extension qualifier="webdriver">
+		<property name="browser">${arquillian.browser}</property>
+		<property name="dimensions">1280x1024</property>
+	</extension>
+
+	<extension qualifier="graphene">
+		<property name="waitGuiInterval">2</property>
+		<property name="waitAjaxInterval">3</property>
+		<property name="waitModelInterval">4</property>
+	</extension>
+
+	<extension qualifier="persistence">
+		<property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
+		<property name="defaultDataSeedStrategy">CLEAN_INSERT</property>
+	</extension>
+
+</arquillian>
