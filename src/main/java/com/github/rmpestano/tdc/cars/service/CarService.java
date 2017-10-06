@@ -6,9 +6,10 @@ package com.github.rmpestano.tdc.cars.service;
 
 import com.github.adminfaces.persistence.model.Filter;
 import com.github.adminfaces.persistence.service.CrudService;
+import com.github.adminfaces.template.exception.BusinessException;
+import com.github.rmpestano.tdc.cars.infra.security.Admin;
 import com.github.rmpestano.tdc.cars.model.Car;
 import com.github.rmpestano.tdc.cars.model.Car_;
-import com.github.adminfaces.template.exception.BusinessException;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
 import javax.ejb.Stateless;
@@ -49,7 +50,7 @@ public class CarService extends CrudService<Car, Integer> implements Serializabl
         if (has(filter.getEntity())) {
             Car filterEntity = filter.getEntity();
             if (has(filterEntity.getModel())) {
-                criteria.likeIgnoreCase(Car_.model, "%" + filterEntity.getModel());
+                criteria.likeIgnoreCase(Car_.model, "%" + filterEntity.getModel() +"%");
             }
 
             if (has(filterEntity.getPrice())) {
@@ -95,7 +96,13 @@ public class CarService extends CrudService<Car, Integer> implements Serializabl
         }
     }
 
-   public boolean isUniqueName(Car car) {
+    @Override
+    @Admin //only user 'admin' can remove cars
+    public void remove(Car entity) {
+        super.remove(entity);
+    }
+
+    public boolean isUniqueName(Car car) {
         return count(criteria()
                 .eqIgnoreCase(Car_.name, car.getName())
                 .notEq(Car_.id, car.getId())) == 0;

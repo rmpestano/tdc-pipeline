@@ -4,6 +4,8 @@ import com.github.adminfaces.persistence.model.AdminSort;
 import com.github.adminfaces.persistence.model.Filter;
 import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.persistence.service.Service;
+import com.github.adminfaces.template.exception.AccessDeniedException;
+import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
 import com.github.rmpestano.tdc.cars.model.Car;
 import com.github.rmpestano.tdc.cars.model.Car_;
 import com.github.rmpestano.tdc.cars.service.CarService;
@@ -25,6 +27,7 @@ import org.junit.runner.RunWith;
 import javax.inject.Inject;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.*;
 
@@ -43,6 +46,9 @@ public class CarServiceIt {
 
     @Inject
     CarService carService;
+
+    @Inject
+    LogonMB logon;
 
     @Inject
     @Service
@@ -128,12 +134,31 @@ public class CarServiceIt {
     @UsingDataSet("cars.yml")
     @Transactional(TransactionMode.DISABLED)
     public void shouldRemoveCar() {
-        assertEquals(carService.count(carService.criteria().eq(Car_.id,1)).intValue(),1);
+        logon.login("admin");
+        long numCarsBefore = carService.count(carService.criteria().eq(Car_.id,1));
         Car car = carService.findById(1);
         assertNotNull(car);
         carService.remove(car);
-        assertEquals(carService.count(carService.criteria().eq(Car_.id,1)).intValue(),0);
+        Long numCarsAfter = carService.count(carService.criteria().eq(Car_.id, 1));
+        assertThat(numCarsAfter).isEqualTo(numCarsBefore-1);
     }
+
+    @Test
+    @UsingDataSet("cars.yml")
+    @Transactional(TransactionMode.DISABLED)
+    public void shouldNotRemoveCarWithUnauthorizedUser() {
+        long numCarsBefore = carService.count(carService.criteria().eq(Car_.id,1));
+        Car car = carService.findById(1);
+        assertNotNull(car);
+        assertThatExceptionOfType(AccessDeniedException.class)
+                .isThrownBy(() -> carService.remove(car))
+                .withMessage("Access denied");
+
+        Long numCarsAfter = carService.count(carService.criteria().eq(Car_.id, 1));
+        assertThat(numCarsAfter).isEqualTo(numCarsBefore);
+    }
+
+
 
     @Test
     @UsingDataSet("cars.yml")

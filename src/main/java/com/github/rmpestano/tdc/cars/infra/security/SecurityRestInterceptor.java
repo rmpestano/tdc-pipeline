@@ -6,10 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.container.PreMatching;
+import javax.ws.rs.container.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 
@@ -20,8 +19,7 @@ import com.github.adminfaces.template.exception.AccessDeniedException;
 
 @Provider
 @RestSecured
-@PreMatching
-public class SecurityRestInterceptor implements ContainerRequestFilter, Serializable {
+public class SecurityRestInterceptor implements ContainerRequestFilter, Serializable, DynamicFeature {
 	
 	  private static final Logger LOG = LoggerFactory.getLogger(SecurityRestInterceptor.class);  
 	
@@ -63,4 +61,12 @@ public class SecurityRestInterceptor implements ContainerRequestFilter, Serializ
 	    return header.get(0);
 	  }
 
+	@Override
+	public void configure(ResourceInfo resourceInfo, FeatureContext context) {
+	  	if(resourceInfo.getResourceMethod().getAnnotation(RestSecured.class) != null
+				|| resourceInfo.getResourceMethod().getDeclaringClass().isAnnotationPresent(RestSecured.class)) {
+
+			context.register(resourceInfo);
+		}
+	}
 }

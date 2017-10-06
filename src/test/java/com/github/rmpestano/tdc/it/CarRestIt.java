@@ -50,15 +50,14 @@ public class CarRestIt {
     URL basePath;
 
 
-
     @Test
     @UsingDataSet("cars.yml")
     public void shouldListCars() {
         given().
                 queryParam("start", 0).queryParam("max", 10).
-        when().
+                when().
                 get(basePath + "rest/cars").
-        then().
+                then().
                 statusCode(Status.OK.getStatusCode()).
                 body("", hasSize(4)).//dataset has 4 cars
                 body("model", hasItem("Ferrari")).
@@ -85,17 +84,14 @@ public class CarRestIt {
     @Test
     @UsingDataSet("cars.yml")
     public void shouldListCarsByModel() {
-        given().
-                queryParam("model", "Porche").
-                when().
-                get(basePath + "rest/cars").
-                then().
-                statusCode(Status.OK.getStatusCode()).
-                body("", hasSize(2)).
-                body("model", hasItem("Porche")).
-                body("model", hasItem("Porche274")).
-                body("price", hasItem(18990.23f)).
-                body("model", not(hasItem("Ferrari")));
+        given().queryParam("model", "Porche")
+                .when().get(basePath + "rest/cars")
+                .then().statusCode(Status.OK.getStatusCode())
+                .body("", hasSize(2))
+                .body("model", hasItem("Porche"))
+                .body("model", hasItem("Porche274"))
+                .body("price", hasItem(18990.23f))
+                .body("model", not(hasItem("Ferrari")));
     }
 
     @Test
@@ -178,19 +174,19 @@ public class CarRestIt {
         carToCreate.add("name", new JsonPrimitive("new car name"));
         carToCreate.add("price", new JsonPrimitive(1000f));
         String result = given().
-                header("user","admin").
+                header("user", "admin").
                 content(carToCreate.toString()).
                 contentType("application/json").
-        when().
+                when().
                 post(basePath + "rest/cars").
-        then().
+                then().
                 statusCode(Status.CREATED.getStatusCode()).extract().asString();
 
         //new car should be there
         given().
-        when().
+                when().
                 get(basePath + "rest/cars").
-        then().
+                then().
                 statusCode(Status.OK.getStatusCode()).
                 body("", hasSize(1)).
                 body("model", hasItem("new car"));
@@ -203,12 +199,12 @@ public class CarRestIt {
         carToCreate.add("model", new JsonPrimitive("new car"));
         carToCreate.add("price", new JsonPrimitive(1000f));
         given()
-                .header("user","admin")
+                .header("user", "admin")
                 .content(carToCreate.toString())
                 .contentType("application/json")
-        .when()
+                .when()
                 .post(basePath + "rest/cars")
-        .then()
+                .then()
                 .statusCode(Status.BAD_REQUEST.getStatusCode())
                 .body("", hasSize(2))
                 .body("message", hasItem("Car name must be unique"))
@@ -221,7 +217,7 @@ public class CarRestIt {
         JsonObject carToCreate = new JsonObject();
         carToCreate.add("price", new JsonPrimitive(1000f));
         given()
-                .header("user","admin")
+                .header("user", "admin")
                 .content(carToCreate.toString())
                 .contentType("application/json")
                 .when()
@@ -263,9 +259,9 @@ public class CarRestIt {
         given().
                 content(carToUpdate.toString()).
                 contentType("application/json").
-         when().
+                when().
                 put(basePath + "rest/cars/1").  //dataset has car with id =1
-         then().
+                then().
                 statusCode(Status.NO_CONTENT.getStatusCode());
 
 
@@ -276,9 +272,9 @@ public class CarRestIt {
     public void shouldFailToDeleteCarWithoutAuthentication() {
         given().
                 contentType(ContentType.JSON).
-                when().
+        when().
                 delete(basePath + "rest/cars/1").  //dataset has car with id =1
-                then().
+        then().
                 statusCode(Status.FORBIDDEN.getStatusCode());
     }
 
@@ -292,7 +288,7 @@ public class CarRestIt {
         when().
                 delete(basePath + "rest/cars/1").  //dataset has car with id =1
         then().
-                statusCode(Status.UNAUTHORIZED.getStatusCode());
+                statusCode(Status.FORBIDDEN.getStatusCode());
     }
 
     @Test
@@ -301,9 +297,9 @@ public class CarRestIt {
         given().
                 contentType(ContentType.JSON).
                 header("user", "admin").
-        when().
+                when().
                 delete(basePath + "rest/cars/1").  //dataset has car with id =1
-        then().
+                then().
                 statusCode(Status.NO_CONTENT.getStatusCode());
 
         //ferrari should not be in db anymore

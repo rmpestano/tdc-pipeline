@@ -1,7 +1,10 @@
 package com.github.rmpestano.tdc.util;
 
+import com.github.adminfaces.template.exception.AccessDeniedException;
 import com.github.adminfaces.template.exception.BusinessException;
+import com.github.adminfaces.template.session.AdminSession;
 import com.github.adminfaces.template.util.Assert;
+import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -24,12 +27,16 @@ public class Deployments {
     public static WebArchive createDeployment() {
         WebArchive war = ShrinkWrap.create(WebArchive.class);
         war.addPackages(true, "com.github.rmpestano.tdc.cars");
-        war.addClasses(BusinessException.class, Assert.class);
+        war.addClasses(BusinessException.class, Assert.class, AccessDeniedException.class, LogonMB.class, AdminSession.class);
         //LIBS
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-persistence").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.primefaces.extensions:primefaces-extensions").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.omnifaces:omnifaces:2.1").withTransitivity().asFile());
+        war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.apache.deltaspike.modules:deltaspike-security-module-api").withTransitivity().asFile());
+        war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.apache.deltaspike.modules:deltaspike-security-module-impl").withTransitivity().asFile());
+
+
 
 
         //WEB-INF

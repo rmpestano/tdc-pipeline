@@ -37,13 +37,22 @@
         <dependency>
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-template</artifactId>
-            <version>1.0.0-RC9</version>
+            <version>1.0.0-20171004.023042-83</version>
+            <!-- end::dep-admin-template[] -->
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.adminfaces</groupId>
+                    <artifactId>admin-theme</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+        <!-- tag::dep-admin-theme[] -->
         <dependency>
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-theme</artifactId>
-            <version>1.0.0-RC9</version>
-            <!--<classifier>dev</classifier> uncompressed theme.css (note that you need to exclude admin-theme brought by admin-template dependency)-->
+            <version>1.0.0-20171006.142256-1208</version>
+            <!-- end::dep-admin-theme[] -->
+            <classifier>no-cache</classifier>
         </dependency>
 
         <!-- persistence -->
@@ -273,8 +282,44 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>2.19.1</version>
                         <configuration>
+                            <runOrder>reversealphabetical</runOrder>
+                            <includes>
+                                <include>**/*Test.java</include>
+                                <include>**/*It.java</include>
+                                <include>**/*Ft.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>it-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
                             <includes>
                                 <include>**/*It.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>ft-tests</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.19.1</version>
+                        <configuration>
+                            <includes>
                                 <include>**/*Ft.java</include>
                             </includes>
                         </configuration>

@@ -1,36 +1,19 @@
 package com.github.rmpestano.tdc.cars.rest;
 
 
-import java.util.List;
+import com.github.adminfaces.persistence.model.Filter;
+import com.github.rmpestano.tdc.cars.infra.security.RestSecured;
+import com.github.rmpestano.tdc.cars.model.Car;
+import com.github.rmpestano.tdc.cars.model.Car_;
+import com.github.rmpestano.tdc.cars.service.CarService;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.CacheControl;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.EntityTag;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriBuilder;
-
-import com.github.adminfaces.persistence.model.Filter;
-import com.github.rmpestano.tdc.cars.service.CarService;
-import com.github.rmpestano.tdc.cars.infra.security.RestSecured;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
+import java.util.List;
 
 @Path("/cars")
 @Produces("application/json;charset=utf-8")
