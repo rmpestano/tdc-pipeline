@@ -44,7 +44,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Arquillian.class)
 public class CarsFt {
 
-    @Deployment(name = "tdc-cars.war", testable = false)
+    @Deployment(testable = false)
     public static Archive<?> createDeployment() {
         WebArchive war = Deployments.createDeployment();
         MavenResolverSystem resolver = Maven.resolver();

@@ -109,9 +109,9 @@
                                              styleClass="btn-flat bg-black"
                                              partialSubmit="true"/>
                         </f:facet>
-                        <p:column selectionMode="multiple" width="5%" styleClass="align-center"/>
+                        <p:column selectionMode="multiple" width="5%" styleClass="align-center" priority="3"/>
 
-                        <p:column headerText="Model" filterBy="#{c.model}" sortBy="#{c.model}"
+                        <p:column headerText="Model" filterBy="#{c.model}" sortBy="#{c.model}" priority="1"
                                   filterMatchMode="contains">
                             <f:facet name="filter">
                                 <p:autoComplete value="#{carListMB.filter.entity.model}" forceSelection="true"
@@ -126,7 +126,7 @@
                             </p:link>
 
                         </p:column>
-                        <p:column headerText="Name" sortBy="#{c.name}" filterBy="#{c.name}">
+                        <p:column headerText="Name" sortBy="#{c.name}" filterBy="#{c.name}" priority="2">
                             <f:facet name="filter">
                                 <p:inputText value="#{carListMB.filter.entity.name}">
                                     <p:ajax process="@this" update="@none" oncomplete="PF('carsTable').filter()"/>
@@ -134,7 +134,7 @@
                             </f:facet>
                             #{c.name}
                         </p:column>
-                        <p:column headerText="Price" sortBy="#{c.price}" filterBy="#{c.price}">
+                        <p:column headerText="Price" sortBy="#{c.price}" filterBy="#{c.price}" priority="2">
                             <f:facet name="filter">
                                 <p:spinner value="#{carListMB.filter.entity.price}">
                                     <f:converter converterId="javax.faces.Double"/>

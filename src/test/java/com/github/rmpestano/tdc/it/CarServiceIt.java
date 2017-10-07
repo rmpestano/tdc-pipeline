@@ -35,7 +35,7 @@ import static org.junit.Assert.*;
 public class CarServiceIt {
 
 
-    @Deployment(name = "admin-starter.war",testable = true)
+    @Deployment
     public static WebArchive createDeployment() {
         WebArchive war = Deployments.createDeployment();
         MavenResolverSystem resolver = Maven.resolver();

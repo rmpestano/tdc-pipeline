@@ -34,7 +34,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(Arquillian.class)
 public class CarRestIt {
 
-    @Deployment(name = "tdc-cars.war")
+    @Deployment
     public static Archive<?> createDeployment() {
         WebArchive war = Deployments.createDeployment();
         war.addPackage(BusinessException.class.getPackage())
