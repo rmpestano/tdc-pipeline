@@ -212,10 +212,11 @@
             </h:form>
         </p:dialog>
 
-        <p:tooltip for="@(div[id$=footer])" escape="false" position="top"
-                       showEvent="mouseover" hideEvent="mouseleave"
-                       value="#{carListMB.searchCriteria}"/>
-
+        <p:outputPanel autoUpdate="true">
+            <p:tooltip id="criteria-tooltip" for="@(div[id$=footer])" escape="false" position="top"
+                           showEvent="mouseover" hideEvent="mouseleave"
+                           value="#{carListMB.searchCriteria}"/>
+        </p:outputPanel>
 
     </ui:define>
 

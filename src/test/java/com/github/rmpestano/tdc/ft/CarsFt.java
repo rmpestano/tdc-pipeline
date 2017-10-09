@@ -49,6 +49,7 @@ public class CarsFt {
         WebArchive war = Deployments.createDeployment();
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-template").withTransitivity().asFile());
+        war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-theme").withoutTransitivity().asSingleFile());
         war.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class).importDirectory("src/main/webapp").as(GenericArchive.class), "/", Filters.include(".*\\.(xml|xhtml|html|css|js|png|gif)$"));
 
         System.out.println(war.toString(true));
@@ -91,9 +92,9 @@ public class CarsFt {
     @InSequence(1)
     public void shouldLogonSuccessfully(@InitialPage LogonPage logon) {
         assertThat(logon.isPresent()).isTrue();
-        logon.doLogon("abc@gmail.com", "abcde");
+        logon.doLogon("admin", "abcde");
         assertThat(infoMessages.isPresent()).isTrue();
-        assertThat(infoMessages.getText()).contains("Logged in successfully as abc@gmail.com");
+        assertThat(infoMessages.getText()).contains("Logged in successfully as admin");
     }
 
     @Test

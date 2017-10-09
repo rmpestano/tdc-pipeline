@@ -46,13 +46,10 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- tag::dep-admin-theme[] -->
         <dependency>
             <groupId>com.github.adminfaces</groupId>
             <artifactId>admin-theme</artifactId>
             <version>1.0.0-RC10</version>
-            <!-- end::dep-admin-theme[] -->
-            <classifier>no-cache</classifier>
         </dependency>
 
         <!-- persistence -->

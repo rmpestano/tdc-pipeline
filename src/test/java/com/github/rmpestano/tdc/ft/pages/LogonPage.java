@@ -11,10 +11,10 @@ import static org.jboss.arquillian.graphene.Graphene.waitModel;
 public class LogonPage {
 
 
-    @FindByJQuery("input[type=email]")
+    @FindByJQuery("input[id$=email]")
     private GrapheneElement email;
 
-    @FindByJQuery("input[type=password]")
+    @FindByJQuery("input[id$=password]")
     private GrapheneElement password;
 
     @FindByJQuery("button.btn-success")
