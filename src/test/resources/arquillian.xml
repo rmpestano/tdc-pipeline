@@ -8,7 +8,7 @@
 
     <container qualifier="chameleon" default="true">
         <configuration>
-            <property name="chameleonTarget">wildfly:8.2.0.Final:remote</property>
+            <property name="chameleonTarget">${arquillian.container}</property>
         </configuration>
     </container>
 
@@ -27,6 +27,10 @@
 	<extension qualifier="persistence">
 		<property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
 		<property name="defaultDataSeedStrategy">CLEAN_INSERT</property>
+	</extension>
+
+	<extension qualifier="cucumber">
+		<property name="report">true</property>
 	</extension>
 
 </arquillian>

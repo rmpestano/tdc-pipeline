@@ -7,7 +7,6 @@ import com.github.rmpestano.tdc.cars.model.Car;
 import com.github.rmpestano.tdc.cars.model.Car_;
 import com.github.rmpestano.tdc.cars.service.CarService;
 import com.github.rmpestano.tdc.util.Deployments;
-import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -23,11 +22,10 @@ import javax.inject.Inject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 @RunWith(ArquillianCucumber.class)
 @Features({"features/search-cars.feature", "features/remove-cars.feature"})
-public class CarBBD {
+public class CarBdd {
 
     @Deployment
     public static WebArchive createDeployment() {
