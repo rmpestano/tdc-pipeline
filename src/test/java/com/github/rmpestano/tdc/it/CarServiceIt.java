@@ -25,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -133,7 +134,7 @@ public class CarServiceIt {
     @Test
     @UsingDataSet("cars.yml")
     @Transactional(TransactionMode.DISABLED)
-    public void shouldRemoveCar() {
+    public void shouldRemoveCar() throws IOException {
         logon.login("admin");
         long numCarsBefore = carService.count(carService.criteria().eq(Car_.id,1));
         Car car = carService.findById(1);

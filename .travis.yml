@@ -9,4 +9,5 @@ cache:
   - "$HOME/.arquillian"
 
 script:
-- mvn clean test -Ptests -Darquillian.browser=phantomjs
+- mvn clean package -Pit-tests -Pwildfly-managed -Pcoverage coveralls:report
+

@@ -263,9 +263,26 @@ public class CarRestIt {
                 put(basePath + "rest/cars/1").  //dataset has car with id =1
                 then().
                 statusCode(Status.NO_CONTENT.getStatusCode());
-
-
     }
+
+    @Test
+    @UsingDataSet("cars.yml")
+    public void shouldFailToUpdateCarWithDifferentId() {
+        JsonObject carToUpdate = new JsonObject();
+        carToUpdate.add("id", new JsonPrimitive(1));
+        carToUpdate.add("version", new JsonPrimitive(0));
+        carToUpdate.add("model", new JsonPrimitive("Ferrari updated"));
+        carToUpdate.add("name", new JsonPrimitive("Ferrari spider updated"));
+        carToUpdate.add("price", new JsonPrimitive(1000f));
+        given().
+                content(carToUpdate.toString()).
+                contentType("application/json").
+                when().
+                put(basePath + "rest/cars/2").  //dataset has car with id =1
+                then().
+                statusCode(Status.CONFLICT.getStatusCode());
+    }
+
 
     @Test
     @UsingDataSet("cars.yml")

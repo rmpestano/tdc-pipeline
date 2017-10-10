@@ -67,7 +67,7 @@
                         </div>
                         <p:spacer height="10"/>
                         <div class="ui-g-12">
-                            <p:commandButton styleClass="btn btn-success btn-block" action="#{logonMB.login}"
+                            <p:commandButton styleClass="btn btn-success btn-block" action="#{logonMB.login(logonMB.email)}"
                                              onclick="showBar()" oncomplete="if(args.validationFailed){hideBar()}"
                                              value="Sign In" update="@form"/>
                         </div>

@@ -42,7 +42,7 @@ public class SecurityRestInterceptor implements ContainerRequestFilter, Serializ
 	    }
 	  }
 
-	  private void logon() {
+	  private void logon() throws IOException {
 	      String username = getHeader("user");
 	      if(username != null) {
 	    	  logonMB.login(username);

@@ -40,22 +40,20 @@ public class LogonMB extends AdminSession implements Serializable {
     private boolean remember;
 
 
-    public void login() throws IOException {
-        currentUser = email;
-        addDetailMessage("Logged in successfully as <b>" + email + "</b>");
-        Faces.getExternalContext().getFlash().setKeepMessages(true);
-        Faces.redirect("index.xhtml");
+    public void login(String user) throws IOException {
+        setCurrentUser(user);
+        if (Faces.hasContext()) {
+            addDetailMessage("Logged in successfully as <b>" + email + "</b>");
+            Faces.getExternalContext().getFlash().setKeepMessages(true);
+            Faces.redirect("index.xhtml");
+        }
     }
-    
-    public void login(String user)  {
-    	setCurrentUser(user);
-    }
-    
+
     @Secures
     @Admin
     public boolean doAdminCheck(InvocationContext invocationContext, BeanManager manager) throws Exception {
         boolean allowed = currentUser != null && currentUser.equals("admin");
-        if(!allowed){
+        if (!allowed) {
             throw new AccessDeniedException("Access denied");
         }
         return allowed;
@@ -65,7 +63,7 @@ public class LogonMB extends AdminSession implements Serializable {
     @Guest
     public boolean doGuestCheck(InvocationContext invocationContext, BeanManager manager) throws Exception {
         boolean allowed = currentUser != null && currentUser.equals("guest") || doAdminCheck(null, null);
-        if(!allowed){
+        if (!allowed) {
             throw new AccessDeniedException("Access denied");
         }
         return allowed;

@@ -190,14 +190,14 @@ public class CarsFt {
     @InSequence(10)
     public void shouldSearchCarByNameAndPrice(@InitialPage CarListPage carList) {
         carList.search();
-        searchDialog.getName().sendKeys("name1");
+        searchDialog.getName().sendKeys("name 1");
         searchDialog.getMinPrice().sendKeys("16");
         searchDialog.getMaxPrice().sendKeys("17.8");
         searchDialog.search();
         searchDialog.close();
         assertThat(carList.getTableRows()).hasSize(2);
-        assertThat(carList.getTableRows().get(0).getText()).contains("name16");
-        assertThat(carList.getTableRows().get(1).getText()).contains("name17");
+        assertThat(carList.getTableRows().get(0).getText()).contains("name 16");
+        assertThat(carList.getTableRows().get(1).getText()).contains("name 17");
 
     }
 

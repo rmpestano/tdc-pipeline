@@ -17,7 +17,7 @@ public class InitAppMB implements Serializable {
 
     @Inject
     @Service
-    private CrudService<Car,Integer> crudService;
+    protected CrudService<Car,Integer> crudService;
 
     @PostConstruct
     public void init() {
@@ -26,8 +26,17 @@ public class InitAppMB implements Serializable {
     }
 
 
-    private void create(int i) {
-        crudService.insert(new Car().model("model " + i).name("name" + i).price(Double.valueOf(i)));
+    protected void create(int i) {
+        create("model " + i,"name " + i,Double.valueOf(i));
     }
+
+    public void create(String model, String name, Double price) {
+        crudService.insert(new Car().model(model).name(name).price(price));
+    }
+
+    public void deleteAll() {
+        crudService.getEntityManager().createQuery("Delete from Car c").executeUpdate();
+    }
+
 
 }
