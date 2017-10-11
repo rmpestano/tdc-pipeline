@@ -11,8 +11,14 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.stream.IntStream;
 
-@Singleton
-@Startup
+//@Singleton
+//@Startup
+
+/**
+ * @deprecated
+ *
+ * Replaced by db migrations
+ */
 public class InitAppMB implements Serializable {
 
     @Inject

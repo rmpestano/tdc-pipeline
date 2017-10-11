@@ -1,6 +1,7 @@
 package com.github.rmpestano.tdc.smoke;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -15,11 +16,20 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class CarsSmoke {
 
     private WebTarget target;
-    private final String HEAÇTH_CHECK_CONTEXT = "http://localhost:8080/tdc-cars/rest/health";
+    private static String HEALTH_CHECK_CONTEXT;
+
+
+    @BeforeClass
+    public static void initContext() {
+        HEALTH_CHECK_CONTEXT = System.getProperty("HEALTH_CHECK_CONTEXT");
+        if(HEALTH_CHECK_CONTEXT == null) {
+            HEALTH_CHECK_CONTEXT = "http://localhost:8080/tdc-cars/rest/health";
+        }
+    }
 
     @Before
     public void init() {
-        target = ClientBuilder.newClient().target(HEAÇTH_CHECK_CONTEXT);
+        target = ClientBuilder.newClient().target(HEALTH_CHECK_CONTEXT);
     }
 
     @Test

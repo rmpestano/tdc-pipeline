@@ -262,6 +262,48 @@
     </build>
 
     <profiles>
+
+        <profile>
+            <id>migrations</id>
+            <properties>
+                <db.url>jdbc:h2:file:/home/rmpestano/db/cars;MV_STORE=FALSE</db.url>
+                <db.username>sa</db.username>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>1.4.192</version>
+                </dependency>
+            </dependencies>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.flywaydb</groupId>
+                        <artifactId>flyway-maven-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>migrate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <url>${db.url}</url>
+                            <user>${db.username}</user>
+                            <password>${db.username}</password>
+                            <locations>
+                                <location>filesystem:src/main/resources/migration</location>
+                            </locations>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>tests</id>
             <build>
