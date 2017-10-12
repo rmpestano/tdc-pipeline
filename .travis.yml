@@ -9,6 +9,6 @@ cache:
   - "$HOME/.arquillian"
 
 script:
-- mvn flyway:repair flyway:migrate -Pmigrations -Ddb.name="cars" -Ddb.path="$HOME"
+- mvn flyway:repair flyway:migrate -Pmigrations -Ddb.name="cars-test"
 - mvn clean package -Pit-tests -Pwildfly-managed -Pcoverage coveralls:report
 

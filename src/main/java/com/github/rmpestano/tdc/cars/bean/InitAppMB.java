@@ -27,11 +27,12 @@ public class InitAppMB implements Serializable {
     @Service
     protected CrudService<Car,Integer> crudService;
 
+   /* Replaced by db migrations
     @PostConstruct
     public void init() {
         IntStream.rangeClosed(1, 50)
                 .forEach(i -> create(i));
-    }
+    }*/
 
 
     protected void create(int i) {

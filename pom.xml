@@ -15,7 +15,7 @@
         <arquillian.container>wildfly:8.2.0.Final:managed</arquillian.container>
         <arquillian.browser>chrome</arquillian.browser>
 
-        <db.path>/home/rmpestano/db</db.path>
+        <db.path>${project.basedir}/db</db.path>
         <db.name>cars</db.name>
         <db.username>sa</db.username>
     </properties>
@@ -325,7 +325,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <url>jdbc:h2:file:${db.path}/${db.name}</url>
+                            <url>jdbc:h2:file:${db.path}/${db.name};MV_STORE=FALSE</url>
                             <user>${db.username}</user>
                             <password>${db.username}</password>
                             <locations>
@@ -338,6 +338,9 @@
         </profile>
         <profile>
             <id>tests</id>
+            <properties>
+                <db.name>cars-test</db.name>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -358,6 +361,9 @@
 
         <profile>
             <id>it-tests</id>
+            <properties>
+                <db.name>cars-test</db.name>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
@@ -376,6 +382,9 @@
 
         <profile>
             <id>ft-tests</id>
+            <properties>
+                <db.name>cars-ft-test</db.name>
+            </properties>
             <build>
                 <plugins>
                     <plugin>
