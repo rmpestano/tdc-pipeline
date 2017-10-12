@@ -5,11 +5,11 @@ import com.github.adminfaces.persistence.model.Filter;
 import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.persistence.service.Service;
 import com.github.adminfaces.template.exception.AccessDeniedException;
+import com.github.adminfaces.template.exception.BusinessException;
 import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
 import com.github.rmpestano.tdc.cars.model.Car;
 import com.github.rmpestano.tdc.cars.model.Car_;
 import com.github.rmpestano.tdc.cars.service.CarService;
-import com.github.adminfaces.template.exception.BusinessException;
 import com.github.rmpestano.tdc.util.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -54,6 +54,7 @@ public class CarServiceIt {
     @Inject
     @Service
     CrudService<Car, Integer> crudService;
+
 
 
     @Test

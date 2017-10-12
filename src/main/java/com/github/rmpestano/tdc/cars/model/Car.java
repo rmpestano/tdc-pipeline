@@ -14,25 +14,24 @@ import javax.persistence.*;
  * @author rmpestano
  */
 @Entity
-@Table(name = "CAR")
+@Table(name = "car")
 public class Car extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "MODEL",nullable = false)
+    @Column(nullable = false)
     private String model;
 
-    @Column(name = "NAME",nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "PRICE", nullable = false)
+    @Column(nullable = false)
     private Double price;
 
     @Version
-    @Column(name = "VERSION", nullable = false)
+    @Column(nullable = false)
     private Integer version;
 
     public Car() {

@@ -1,4 +1,4 @@
-car:
+CAR:
   - id: 1
     model: "Ferrari"
     name: "ferrari spider"

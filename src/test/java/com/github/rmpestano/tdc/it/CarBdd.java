@@ -13,6 +13,8 @@ import cucumber.api.java.en.When;
 import cucumber.runtime.arquillian.ArquillianCucumber;
 import cucumber.runtime.arquillian.api.Features;
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
+import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
@@ -118,5 +120,6 @@ public class CarBdd {
     public void error_message_must_be(String msg) throws Throwable {
         assertThat(msg).isEqualTo(message);
     }
+
 
 }

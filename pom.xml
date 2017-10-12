@@ -14,6 +14,10 @@
         <version.deltaspike>1.8.0</version.deltaspike>
         <arquillian.container>wildfly:8.2.0.Final:managed</arquillian.container>
         <arquillian.browser>chrome</arquillian.browser>
+
+        <db.path>/home/rmpestano/db</db.path>
+        <db.name>cars</db.name>
+        <db.username>sa</db.username>
     </properties>
 
     <dependencies>
@@ -182,6 +186,20 @@
             <version>2.22.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <!--<dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.192</version>
+            <scope>test</scope>
+        </dependency>-->
+
     </dependencies>
 
     <dependencyManagement>
@@ -209,6 +227,10 @@
             <resource>
                 <filtering>true</filtering>
                 <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/webapp/WEB-INF</directory>
             </resource>
             <resource>
                 <directory>src/main/docs</directory>
@@ -257,6 +279,21 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <filtering>true</filtering>
+                            <directory>src/main/webapp</directory>
+                            <includes>
+                                <include>**/cars-ds.xml</include>
+                            </includes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
         </plugins>
         <finalName>tdc-cars</finalName>
     </build>
@@ -265,11 +302,6 @@
 
         <profile>
             <id>migrations</id>
-            <properties>
-                <db.url>jdbc:h2:file:/home/rmpestano/db/cars;MV_STORE=FALSE</db.url>
-                <db.username>sa</db.username>
-            </properties>
-
             <dependencies>
                 <dependency>
                     <groupId>com.h2database</groupId>
@@ -293,7 +325,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <url>${db.url}</url>
+                            <url>jdbc:h2:file:${db.path}/${db.name}</url>
                             <user>${db.username}</user>
                             <password>${db.username}</password>
                             <locations>

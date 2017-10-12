@@ -36,14 +36,12 @@ public class Deployments {
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.apache.deltaspike.modules:deltaspike-security-module-api").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.apache.deltaspike.modules:deltaspike-security-module-impl").withTransitivity().asFile());
 
-
-
-
         //WEB-INF
 
         war.addAsWebInfResource(new File(WEB_INF,"beans.xml"), "beans.xml");
         war.addAsWebInfResource(new File(WEB_INF,"web.xml"), "web.xml");
         war.addAsWebInfResource(new File(WEB_INF,"faces-config.xml"), "faces-config.xml");
+        war.addAsWebInfResource("cars-test-ds.xml", "cars-ds.xml");
         //resources
         war.addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml");
 

@@ -25,8 +25,13 @@
 	</extension>
 
 	<extension qualifier="persistence">
-		<property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
+		<property name="defaultDataSource">java:jboss/datasources/CarsDS</property>
 		<property name="defaultDataSeedStrategy">CLEAN_INSERT</property>
+	</extension>
+
+	<extension qualifier="persistence-dbunit">
+		<property name="excludeTablesFromCleanup">SCHEMA_VERSION</property>
+		<property name="caseSensitiveTableNames">true</property>
 	</extension>
 
 	<extension qualifier="cucumber">

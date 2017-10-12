@@ -7,6 +7,7 @@ import com.github.rmpestano.tdc.cars.model.Car;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.stream.IntStream;
@@ -19,6 +20,7 @@ import java.util.stream.IntStream;
  *
  * Replaced by db migrations
  */
+@Stateless
 public class InitAppMB implements Serializable {
 
     @Inject
