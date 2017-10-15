@@ -1,10 +1,10 @@
 package com.github.rmpestano.tdc.ft;
 
-import com.github.rmpestano.tdc.ft.pages.fragments.LeftMenu;
 import com.github.rmpestano.tdc.ft.pages.CarFormPage;
 import com.github.rmpestano.tdc.ft.pages.CarListPage;
 import com.github.rmpestano.tdc.ft.pages.IndexPage;
 import com.github.rmpestano.tdc.ft.pages.LogonPage;
+import com.github.rmpestano.tdc.ft.pages.fragments.LeftMenu;
 import com.github.rmpestano.tdc.ft.pages.fragments.SearchDialog;
 import com.github.rmpestano.tdc.util.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -156,7 +156,7 @@ public class CarsFt {
     @InSequence(7)
     public void shouldEditViaUrl() {
         menu.goHome();
-        webDriver.get(url+"/car-form.xhtml?id=20");
+        webDriver.get(url+"car-form.xhtml?id=20");
         assertThat(carForm.isPresent()).isTrue();
         carForm.getInputModel().clear();
         waitGui(webDriver);

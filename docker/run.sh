@@ -1,2 +1,2 @@
 #!/bin/sh
-docker run -it --name tdc-cars rmpestano/tdc-cars -v ~/db:/db
+docker run -it --name tdc-cars -p 8080:8080 -v ~/db:/opt/jboss/db tdc-cars

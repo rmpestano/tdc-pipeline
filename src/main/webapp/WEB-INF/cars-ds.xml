@@ -6,7 +6,7 @@
         http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
 
     <datasource jndi-name="java:jboss/datasources/CarsDS" pool-name="CarsDS" jta="true" enabled="true" use-java-context="true">
-        <connection-url>jdbc:h2:file:${db.path}/${db.name}</connection-url>
+        <connection-url>jdbc:h2:file:${db.path}/${db.name};MV_STORE=FALSE</connection-url>
         <driver>h2</driver>
         <security>
             <user-name>sa</user-name>

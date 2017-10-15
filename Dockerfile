@@ -4,4 +4,4 @@ COPY ./docker/standalone.conf ${JBOSS_HOME}/bin/
 
 COPY ./target/tdc-cars.war ${JBOSS_HOME}/standalone/deployments
 
-VOLUME ["/db"]
+VOLUME ["~/db"]

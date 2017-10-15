@@ -13,14 +13,15 @@ IMPORTANT: You need `Docker`, `Maven` and `Java` installed on your machine.
 
 All commands below must be executed in project root folder.
 
-. Create the (filesystem) database using Flyway with command:
+. Create a (filesystem) database using Flyway:
 +
 ----
-mvn flyway:repair flyway:migrate -Pmigrations -Ddb.path=~/db
+mvn flyway:migrate -P migrations -D db.path=~/db
 ----
 After that file named `cars.h2.db` must be created on your `home/db` folder.
 +
 NOTE: your user must have write permissions in `~/db` directory.
+TIP: If you are on a non unix OS like Windows you must change `db.path` to an existing directory e.g: dp.path=C:/db
 . Create application binary with:
 +
 ----
@@ -35,7 +36,71 @@ docker build -t tdc-cars .
 . And finally run the application:
 +
 ----
-docker run -it --name tdc-car -v ~/db:/db tdc-cars
+docker run -it --name tdc-cars -p 8080:8080 -v ~/db:/opt/jboss/db tdc-cars
 ----
 +
+NOTE: `-v ~/db:/opt/jboss/db` maps our host filesystem database (the one we created with Flyway) to docker container home dir so we can exit the container without losing data.
++
+NOTE: `/opt/jboss/` is the home dir (`~/`) in wildfly docker container.
++
 . Access the application at http://localhost:8080/tdc-cars
+
+== Running tests
+
+=== Integration tests
+
+Tests in this application use Arquillian, http://arquillian.org/guides/getting_started_rinse_and_repeat/[see this guide^] if you never heard about it.
+
+. Initialize database
++
+----
+ mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test
+----
+. Run the tests
++
+----
+mvn clean test -Pit-tests
+----
++
+[TIP]
+====
+If you want to run the test using an already running server activate `wildfly-remote` profile:
+
+----
+mvn clean test -Pit-tests -Pwildfly-remote
+----
+====
+
+TIP: For `it tests` the database migration can be run only once to create tables. DataSets are prepared by http://arquillian.org/arquillian-extension-persistence/[Arquillian Persistence^].
+
+=== Functional tests
+
+. Initialize database
++
+----
+ mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test
+----
+. Run the tests
++
+----
+mvn clean test -Pft-tests
+----
+
+TIP: For `ft tests` the database migration is required to be run every time the tests are run because Arquillian Persistence https://issues.jboss.org/browse/ARQ-1077[is not enabled in functional tests^].
+
+=== Performance tests
+
+Perf tests use Gatling tool, https://gatling.io[see it's web site^] to get an idea if you never head about it.
+
+. Initialize database
++
+----
+ mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars
+----
+. <<Running the application,Deploy the application>>
+
+. Run the tests
++
+----
+mvn clean gatling:execute -Pperf
+----
