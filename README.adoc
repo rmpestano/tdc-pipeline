@@ -5,3 +5,37 @@ image:https://coveralls.io/repos/rmpestano/tdc-cars/badge.png[Coverage, link=htt
 
 
 Sample application for JavaEE Pipeline as code presentation.
+
+
+== Running the application
+
+IMPORTANT: You need `Docker`, `Maven` and `Java` installed on your machine.
+
+All commands below must be executed in project root folder.
+
+. Create the (filesystem) database using Flyway with command:
++
+----
+mvn flyway:repair flyway:migrate -Pmigrations -Ddb.path=~/db
+----
+After that file named `cars.h2.db` must be created on your `home/db` folder.
++
+NOTE: your user must have write permissions in `~/db` directory.
+. Create application binary with:
++
+----
+mvn clean package
+----
+. Now create a docker image using:
++
+----
+docker build -t tdc-cars .
+----
+
+. And finally run the application:
++
+----
+docker run -it --name tdc-car -v ~/db:/db tdc-cars
+----
++
+. Access the application at http://localhost:8080/tdc-cars
