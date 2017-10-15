@@ -102,6 +102,11 @@ public class CarService extends CrudService<Car, Integer> implements Serializabl
         super.remove(entity);
     }
 
+    @Admin
+    public void removeAll() {
+        entityManager.createQuery("Delete from Car c").executeUpdate();
+    }
+
     public boolean isUniqueName(Car car) {
         return count(criteria()
                 .eqIgnoreCase(Car_.name, car.getName())

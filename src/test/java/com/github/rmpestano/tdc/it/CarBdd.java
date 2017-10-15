@@ -1,7 +1,6 @@
 package com.github.rmpestano.tdc.it;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
-import com.github.rmpestano.tdc.cars.bean.InitAppMB;
 import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
 import com.github.rmpestano.tdc.cars.model.Car;
 import com.github.rmpestano.tdc.cars.model.Car_;
@@ -13,14 +12,14 @@ import cucumber.api.java.en.When;
 import cucumber.runtime.arquillian.ArquillianCucumber;
 import cucumber.runtime.arquillian.api.Features;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.transaction.api.annotation.TransactionMode;
-import org.jboss.arquillian.transaction.api.annotation.Transactional;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
@@ -50,16 +49,14 @@ public class CarBdd {
 
     String message;
 
-    @Inject
-    private InitAppMB initAppMB;
-
     @Given("^Database is initialized$")
-    public void initDatabase() {
-        initAppMB.deleteAll();
-        initAppMB.create("Ferrari","ferrari spider",2450.8);
-        initAppMB.create("Mustang","mustang spider",12999.0);
-        initAppMB.create("Porche","porche avenger",1390.3);
-        initAppMB.create("Porche274","porche rally",18990.23);
+    public void initDatabase()  {
+        logonMB.login("admin");
+        carService.removeAll();
+        createCar("Ferrari","ferrari spider",2450.8);
+        createCar("Mustang","mustang spider",12999.0);
+        createCar("Porche","porche avenger",1390.3);
+        createCar("Porche274","porche rally",18990.23);
     }
 
     @Given("^search car with model \"([^\"]*)\"$")
@@ -119,6 +116,10 @@ public class CarBdd {
     @Then("^error message must be \"([^\"]*)\"$")
     public void error_message_must_be(String msg) throws Throwable {
         assertThat(msg).isEqualTo(message);
+    }
+
+    public void createCar(String model, String name, Double price) {
+        carService.insert(new Car().model(model).name(name).price(price));
     }
 
 

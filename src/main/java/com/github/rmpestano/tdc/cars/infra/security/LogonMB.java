@@ -14,6 +14,8 @@ import javax.interceptor.InvocationContext;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.github.adminfaces.persistence.util.Messages.addDetailMessage;
 
@@ -40,12 +42,20 @@ public class LogonMB extends AdminSession implements Serializable {
     private boolean remember;
 
 
-    public void login(String user) throws IOException {
+    public void login(String user)  {
         setCurrentUser(user);
         if (Faces.hasContext()) {
-            addDetailMessage("Logged in successfully as <b>" + email + "</b>");
-            Faces.getExternalContext().getFlash().setKeepMessages(true);
+            logonRedirect();
+        }
+    }
+
+    private void logonRedirect() {
+        addDetailMessage("Logged in successfully as <b>" + email + "</b>");
+        Faces.getExternalContext().getFlash().setKeepMessages(true);
+        try {
             Faces.redirect("index.xhtml");
+        } catch (IOException e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE,"Could not redirect after logon.",e);
         }
     }
 

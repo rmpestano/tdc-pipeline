@@ -135,7 +135,7 @@ public class CarServiceIt {
     @Test
     @UsingDataSet("cars.yml")
     @Transactional(TransactionMode.DISABLED)
-    public void shouldRemoveCar() throws IOException {
+    public void shouldRemoveCar() {
         logon.login("admin");
         long numCarsBefore = carService.count(carService.criteria().eq(Car_.id,1));
         Car car = carService.findById(1);
