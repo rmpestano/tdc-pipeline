@@ -30,7 +30,7 @@ mvn clean package
 +
 [IMPORTANT]
 ====
-If you have changed *db.path* in migrations command you must build thr application with the same param:
+If you have changed *db.path* in migrations command you must build the application with the same param:
 
 ----
 mvn clean package -D db.path=C:/db
