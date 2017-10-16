@@ -18,15 +18,25 @@ All commands below must be executed in project root folder.
 ----
 mvn flyway:migrate -P migrations -D db.path=~/db
 ----
-After that file named `cars.h2.db` must be created on your `home/db` folder.
+After that, a file named `cars.h2.db` will be created on your `home/db` folder.
 +
 NOTE: your user must have write permissions in `~/db` directory.
-TIP: If you are on a non unix OS like Windows you must change `db.path` to an existing directory e.g: dp.path=C:/db
+TIP: If you are on a non unix OS like Windows you must change `db.path` to an existing directory e.g: db.path=C:/db
 . Create application binary with:
 +
 ----
 mvn clean package
 ----
++
+[IMPORTANT]
+====
+If you have changed *db.path* in migrations command you must build thr application with the same param:
+
+----
+mvn clean package -D db.path=C:/db
+----
+
+====
 . Now create a docker image using:
 +
 ----
