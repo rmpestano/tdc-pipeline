@@ -46,7 +46,7 @@ public class CarsFt {
 
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
-        WebArchive war = Deployments.createDeployment();
+        WebArchive war = Deployments.createDeployment("cars-ft.war");
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-template").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-theme").withoutTransitivity().asSingleFile());
@@ -131,7 +131,6 @@ public class CarsFt {
         waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
                 .is().not().visible();
         webDriver.findElements(By.cssSelector("td .ui-chkbox-box")).forEach(e -> e.click());
-        waitModel();
         carList.remove();
         assertThat(infoMessages.getText()).isEqualTo("5 cars deleted successfully!");
     }

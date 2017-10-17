@@ -13,6 +13,8 @@
         <version.hibernate>5.1.8.Final</version.hibernate>
         <version.deltaspike>1.8.0</version.deltaspike>
         <arquillian.container>wildfly:8.2.0.Final:managed</arquillian.container>
+        <arquillian.port-offset>0</arquillian.port-offset>
+        <arquillian.port>9990</arquillian.port>
         <arquillian.browser>chrome</arquillian.browser>
         <db.path>~/db</db.path>
         <db.name>cars</db.name>
@@ -445,6 +447,7 @@
                         <configuration>
                             <excludes>
                                 <exclude>com/github/rmpestano/tdc/cars/bean/*.class</exclude>
+                                <exclude>com/github/rmpestano/tdc/cars/bean/rest/HealthCheck.class</exclude>
                                 <exclude>com/github/rmpestano/tdc/cars/model/*.class</exclude>
                             </excludes>
                         </configuration>

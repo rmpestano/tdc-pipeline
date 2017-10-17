@@ -19,18 +19,16 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 
-import java.io.IOException;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(ArquillianCucumber.class)
 @Features({"features/search-cars.feature", "features/remove-cars.feature"})
-public class CarBdd {
+public class CarsBdd {
 
     @Deployment
     public static WebArchive createDeployment() {
-        WebArchive war = Deployments.createDeployment();
+        WebArchive war = Deployments.createDeployment("cars-bdd.war");
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.assertj:assertj-core").withTransitivity().asFile());
         System.out.println(war.toString(true));

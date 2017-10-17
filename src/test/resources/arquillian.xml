@@ -9,6 +9,12 @@
     <container qualifier="chameleon" default="true">
         <configuration>
             <property name="chameleonTarget">${arquillian.container}</property>
+			<property name="outputToConsole">true</property>
+			<property name="javaVmArguments">-Xmx512m -Djboss.bind.address=localhost
+				-Djboss.socket.binding.port-offset=${arquillian.port-offset}
+				-Djboss.management.native.port=9990
+			</property>
+			<property name="managementPort">${arquillian.port}</property>
         </configuration>
     </container>
 

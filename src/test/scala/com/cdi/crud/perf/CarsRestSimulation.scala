@@ -24,7 +24,7 @@ class CarRestSimulation extends Simulation {
   var expectedMeanResponseTime = 70
   var expectedRequestPerSecond = 18
 
-  var baseUrl = System.getProperty("baseUrl")
+  var baseUrl = System.getProperty("APP_CONTEXT")
 
    if (baseUrl == null) {
        baseUrl = "http://localhost:8080/tdc-cars/";

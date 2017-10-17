@@ -38,7 +38,7 @@ public class CarServiceIt {
 
     @Deployment
     public static WebArchive createDeployment() {
-        WebArchive war = Deployments.createDeployment();
+        WebArchive war = Deployments.createDeployment("cars-it.war");
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("org.assertj:assertj-core").withTransitivity().asFile());
         System.out.println(war.toString(true));

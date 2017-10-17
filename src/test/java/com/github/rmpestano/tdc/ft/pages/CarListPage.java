@@ -104,6 +104,7 @@ public class CarListPage {
     }
 
     public void remove() {
+        waitModel().until().element(btRemove).is().enabled();
         btRemove.click();
         waitModel().until().element(confirmHeader).is().present();
         guardAjax(btYes).click();

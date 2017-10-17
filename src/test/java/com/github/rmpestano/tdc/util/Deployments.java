@@ -11,6 +11,9 @@ import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.jboss.shrinkwrap.resolver.api.maven.MavenResolverSystem;
 
 import java.io.File;
+import java.util.UUID;
+
+import static com.github.adminfaces.template.util.Assert.has;
 
 /**
  * @author rafael-pestano
@@ -25,7 +28,14 @@ public class Deployments {
      * @return base WebArchive for all arquillian tests
      */
     public static WebArchive createDeployment() {
-        WebArchive war = ShrinkWrap.create(WebArchive.class);
+        return createDeployment(null);
+    }
+
+    public static WebArchive createDeployment(String name) {
+        if(!has(name)) {
+            name = UUID.randomUUID().toString() +".war";
+        }
+        WebArchive war = ShrinkWrap.create(WebArchive.class,name);
         war.addPackages(true, "com.github.rmpestano.tdc.cars");
         war.addClasses(BusinessException.class, Assert.class, AccessDeniedException.class, LogonMB.class, AdminSession.class);
         //LIBS
@@ -42,6 +52,7 @@ public class Deployments {
         war.addAsWebInfResource(new File(WEB_INF,"web.xml"), "web.xml");
         war.addAsWebInfResource(new File(WEB_INF,"faces-config.xml"), "faces-config.xml");
         war.addAsWebInfResource("cars-test-ds.xml", "cars-ds.xml");
+
         //resources
         war.addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml");
 
@@ -50,5 +61,4 @@ public class Deployments {
 
         return war;
     }
-
 }

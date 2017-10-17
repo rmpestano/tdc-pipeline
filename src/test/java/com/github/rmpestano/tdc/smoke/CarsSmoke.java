@@ -21,7 +21,7 @@ public class CarsSmoke {
 
     @BeforeClass
     public static void initContext() {
-        HEALTH_CHECK_CONTEXT = System.getProperty("HEALTH_CHECK_CONTEXT");
+        HEALTH_CHECK_CONTEXT = System.getProperty("APP_CONTEXT");
         if(HEALTH_CHECK_CONTEXT == null) {
             HEALTH_CHECK_CONTEXT = "http://localhost:8080/tdc-cars/rest/health";
         }
