@@ -146,7 +146,7 @@ public class CarsFt {
         carList.filterByModel("model 20");
         waitModel(webDriver).until().element(By.cssSelector("ul.ui-autocomplete-items")).is().not().visible();
         waitModel();
-        guardHttp(webDriver.findElement(By.cssSelector("td[role=gridcell] a"))).click();
+        guardHttp(webDriver.findElement(By.cssSelector("td[role=gridcell] a.ui-link"))).click();
         assertThat(carForm.isPresent()).isTrue();
         carForm.getInputModel().clear();
         waitGui(webDriver);
