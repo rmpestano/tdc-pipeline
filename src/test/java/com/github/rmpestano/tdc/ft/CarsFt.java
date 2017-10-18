@@ -132,7 +132,7 @@ public class CarsFt {
                 .is().not().visible();
         guardAjax(webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box")).get(0)).click();
         carList.remove();
-        assertThat(infoMessages.getText()).isEqualTo("5 cars deleted successfully!");
+        assertThat(infoMessages.getText()).isEqualTo("1 car(s) deleted successfully!");
     }
 
     @Test

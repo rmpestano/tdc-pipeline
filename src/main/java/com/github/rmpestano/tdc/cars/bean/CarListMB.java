@@ -55,7 +55,7 @@ public class CarListMB extends CrudMB<Car> implements Serializable {
             carService.remove(selectedCar);
         }
         selectionList.clear();
-        addDetailMessage(numCars + " cars deleted successfully!");
+        addDetailMessage(numCars + " car(s) deleted successfully!");
     }
 
     public String getSearchCriteria() {
