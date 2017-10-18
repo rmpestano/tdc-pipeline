@@ -131,7 +131,7 @@ public class CarsFt {
         waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
                 .is().not().visible();
         waitModel();
-        webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box")).forEach(
+        webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box:nth-child(-n+3)")).forEach(
                 e -> e.click());
         waitModel().withTimeout(2,TimeUnit.SECONDS);
         carList.remove();
