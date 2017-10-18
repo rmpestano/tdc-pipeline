@@ -1,14 +1,14 @@
 pipeline {
     agent any
     stages {
-        /*stage('Checkout') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/rmpestano/tdc-cars.git'
+                //git 'https://github.com/rmpestano/tdc-cars.git'
+                lastChanges format:'SIDE',matching: 'LINE'
             }
-        }*/
+        }
         stage('build') {
             steps {
-                lastChanges format:'SIDE',matching: 'LINE'
                 sh 'mvn clean package -DskipTests'
             }
         }

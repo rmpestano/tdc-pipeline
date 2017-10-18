@@ -17,11 +17,11 @@ class CarRestSimulation extends Simulation {
       session
     })
 
-  var totalUsersPerScenario = 30
+  var totalUsersPerScenario = 10
   var initialUsersPerScenario = 1
-  var scenarioDurationInSeconds = 15 //2 users per second
+  var scenarioDurationInSeconds = 10 //2 users per second
   var expectedMaxResponseTime = 600
-  var expectedMeanResponseTime = 70
+  var expectedMeanResponseTime = 80
   var expectedRequestPerSecond = 18
 
   var baseUrl = System.getProperty("APP_CONTEXT")
@@ -120,34 +120,34 @@ class CarRestSimulation extends Simulation {
 
   setUp(
     listCarsScenario.inject(
-      rampUsers(5) over(5 seconds),
+      rampUsers(2) over(5 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
       //constantUsersPerSec(500) during (1 minutes))
      ),
     findCarsScenario.inject(
-      atOnceUsers(5),
-      rampUsers(10) over(10 seconds),
+      atOnceUsers(3),
+      rampUsers(5) over(8 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     ),
     addCarsScenario.inject(
-      atOnceUsers(10),
-      rampUsers(10) over(10 seconds),
+      atOnceUsers(5),
+      rampUsers(5) over(8 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     ),
     deleteCarsScenario.inject(
       atOnceUsers(5),
-      rampUsers(10) over(5 seconds),
+      rampUsers(5) over(5 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     )
 
   )
     .protocols(httpProtocol)
     .assertions(
-      global.successfulRequests.percent.greaterThan(95),
+      global.successfulRequests.percent.greaterThan(90),
       global.responseTime.max.lessThan(expectedMaxResponseTime),
       global.responseTime.mean.lessThan(expectedMeanResponseTime),
       global.requestsPerSec.greaterThan(expectedRequestPerSecond)
 
     )
 
-}
+}]

@@ -130,7 +130,10 @@ public class CarsFt {
         carList.clear();
         waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
                 .is().not().visible();
-        webDriver.findElements(By.cssSelector("td .ui-chkbox-box")).forEach(e -> e.click());
+        waitModel();
+        webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box")).forEach(
+                e -> e.click());
+        waitModel().withTimeout(2,TimeUnit.SECONDS);
         carList.remove();
         assertThat(infoMessages.getText()).isEqualTo("5 cars deleted successfully!");
     }
@@ -142,6 +145,7 @@ public class CarsFt {
                 .element(carList.getConfirmHeader()).is().not().visible();
         carList.filterByModel("model 20");
         waitModel(webDriver).until().element(By.cssSelector("ul.ui-autocomplete-items")).is().not().visible();
+        waitModel();
         guardHttp(webDriver.findElement(By.cssSelector("td[role=gridcell] a"))).click();
         assertThat(carForm.isPresent()).isTrue();
         carForm.getInputModel().clear();
