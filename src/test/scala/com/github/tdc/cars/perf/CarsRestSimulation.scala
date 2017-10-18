@@ -150,4 +150,4 @@ class CarRestSimulation extends Simulation {
 
     )
 
-}]
+}
