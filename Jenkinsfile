@@ -1,15 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
+       /* stage('Checkout') {
             steps {
-                //git 'https://github.com/rmpestano/tdc-cars.git'
-                lastChanges format:'SIDE',matching: 'LINE'
+                git 'https://github.com/rmpestano/tdc-cars.
             }
-        }
+        }*/
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
+                stash includes: '*/**', name: 'src'
             }
         }
 
@@ -21,6 +21,7 @@ pipeline {
 
         stage('it-tests') {
             steps {
+                unstash 'src'
                 sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                 sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090'
                 livingDocs()
@@ -29,6 +30,7 @@ pipeline {
 
         stage('ft-tests') {
             steps {
+                unstash 'src'
                 sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
                 sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
             }
@@ -61,4 +63,20 @@ pipeline {
             }
         }
     }
+
+      post {
+            always {
+                lastChanges()
+            }
+            success {
+                    slackSend channel: '#builds',
+                              color: 'good',
+                              message: "${currentBuild.fullDisplayName} succeeded. (<${env.BUILD_URL}|Open>)"
+            }
+            failure {
+                slackSend channel: '#builds',
+                          color: 'danger',
+                          message: "${currentBuild.fullDisplayName} failed. (<${env.BUILD_URL}|Open>)"
+            }
+        }
 }
