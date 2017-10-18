@@ -130,10 +130,7 @@ public class CarsFt {
         carList.clear();
         waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
                 .is().not().visible();
-        waitModel();
-        webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box:nth-child(-n+3)")).forEach(
-                e -> e.click());
-        waitModel().withTimeout(2,TimeUnit.SECONDS);
+        guardAjax(webDriver.findElements(By.cssSelector("td.ui-selection-column .ui-chkbox-box")).get(0)).click();
         carList.remove();
         assertThat(infoMessages.getText()).isEqualTo("5 cars deleted successfully!");
     }
