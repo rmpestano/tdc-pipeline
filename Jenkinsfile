@@ -38,13 +38,13 @@ pipeline {
 
         stage('migrations') {
             steps {
+                sh 'docker stop tdc-cars || true && docker rm tdc-cars || true'
                 sh 'mvn flyway:repair flyway:migrate -P migrations'
             }
         }
 
         stage('deploy') {
             steps {
-                sh 'docker stop tdc-cars || true && docker rm tdc-cars || true'
                 sh 'docker build -t rmpestano/tdc-cars .'
                 sh 'docker run --name tdc-cars -p 8181:8080 -v ~/db:/opt/jboss/db tdc-cars &'
             }
