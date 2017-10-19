@@ -13,27 +13,35 @@ pipeline {
             }
         }
 
-        stage('unit-tests') {
-            steps {
-                sh 'mvn test'
-            }
-        }
+        stage('tests') {
+            failFast true
 
-        stage('it-tests') {
-            steps {
-                unstash 'src'
-                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-                sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090'
-                livingDocs()
-            }
-        }
+            parallel {
 
-        stage('ft-tests') {
-            steps {
-                unstash 'src'
-                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
-                sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
+                stage('unit-tests') {
+                    steps {
+                        sh 'mvn test'
+                    }
+                }
+
+                stage('it-tests') {
+                    steps {
+                        unstash 'src'
+                        sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
+                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090'
+                        livingDocs()
+                    }
+                }
+
+                stage('ft-tests') {
+                    steps {
+                        unstash 'src'
+                        sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
+                        sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
+                    }
+                }
             }
+
         }
 
         stage('migrations') {
