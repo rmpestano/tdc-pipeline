@@ -21,19 +21,22 @@ pipeline {
                 stage('unit-tests') {
                     steps {
                         sh 'mvn test'
+                        withSonarQubeEnv('sonar') {
+                            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+                          }
                     }
                 }
 
                 stage('it-tests') {
-                    agent {
+                    /*agent {
                         docker {
                             image 'maven:3.3.9-alpine'
                             args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
                         }
-                    }
+                    }*/
                     steps {
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Darquillian.container=wildfly:8.2.0.Final:managed'
+                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
                         livingDocs()
                     }
                 }
@@ -47,6 +50,15 @@ pipeline {
            /* }
 
          }*/
+
+         stage("Quality Gate") {
+           timeout(time: 20, unit: 'MINUTES') {
+             def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+             if (result.status != 'OK') {
+               error "Pipeline aborted due to quality gate failure: ${result.status}"
+               }
+             }
+          }
 
         stage('migrations') {
             steps {

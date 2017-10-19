@@ -19,6 +19,9 @@
         <db.path>~/db</db.path>
         <db.name>cars</db.name>
         <db.username>sa</db.username>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+        <sonar.jacoco.itReportPath>target/jacoco-it.exec</sonar.jacoco.itReportPath>
     </properties>
 
     <dependencies>
@@ -89,6 +92,13 @@
             <version>${version.deltaspike}</version>
             <scope>runtime</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>3.2</version>
+        </dependency>
+
         <!-- tests -->
         <dependency>
             <groupId>junit</groupId>
@@ -423,6 +433,7 @@
             <id>coverage</id>
             <properties>
                 <jacoco.version>0.7.9</jacoco.version>
+                <jacoco.destFile>jacoco</jacoco.destFile>
             </properties>
             <build>
                 <plugins>
@@ -445,6 +456,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                            <destFile>target/${jacoco.destFile}.exec</destFile>
                             <excludes>
                                 <exclude>com/github/rmpestano/tdc/cars/bean/*.class</exclude>
                                 <exclude>com/github/rmpestano/tdc/cars/bean/rest/HealthCheck.class</exclude>
