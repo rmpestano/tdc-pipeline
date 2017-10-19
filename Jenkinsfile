@@ -68,20 +68,21 @@ pipeline {
             }
         }
 
-        post {
-            always {
-                lastChanges()
-            }
-            success {
-                slackSend channel: '#builds',
-                    color: 'good',
-                    message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
-            }
-            failure {
-                slackSend channel: '#builds',
-                    color: 'danger',
-                    message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
-            }
+    }
+
+    post {
+        always {
+            lastChanges()
+        }
+        success {
+            slackSend channel: '#builds',
+                color: 'good',
+                message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
+        }
+        failure {
+            slackSend channel: '#builds',
+                color: 'danger',
+                message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
         }
     }
 }
