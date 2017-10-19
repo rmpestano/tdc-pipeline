@@ -27,7 +27,8 @@ pipeline {
                 stage('it-tests') {
                     agent {
                         docker {
-                            image 'maven:3.3.9-jdk-8'
+                            image 'maven:3.3.9-alpine'
+                            args '-v $HOME/.m2:/root/.m2'
                         }
                     }
                     steps {
