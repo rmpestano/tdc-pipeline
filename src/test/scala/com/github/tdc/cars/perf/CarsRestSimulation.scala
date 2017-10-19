@@ -20,7 +20,7 @@ class CarRestSimulation extends Simulation {
   var totalUsersPerScenario = 10
   var initialUsersPerScenario = 1
   var scenarioDurationInSeconds = 10 //2 users per second
-  var expectedMaxResponseTime = 700
+  var expectedMaxResponseTime = 850
   var expectedMeanResponseTime = 80
   var expectedRequestPerSecond = 18
 
