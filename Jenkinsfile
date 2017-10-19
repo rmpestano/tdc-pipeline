@@ -26,8 +26,10 @@ pipeline {
 
                 stage('it-tests') {
                     agent {
-                            docker { image 'maven:3-alpine' }
-                         }
+                        docker {
+                            image 'maven:3.3.9-jdk-8'
+                        }
+                    }
                     steps {
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                         sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Darquillian.container=wildfly:8.2.0.Final:managed'
