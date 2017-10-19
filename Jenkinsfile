@@ -9,7 +9,11 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-                stash includes: '*/**', name: 'src'
+                  archiveArtifacts {
+                            pattern('/**/*')
+                            pattern('/**/*')
+                            onlyIfSuccessful()
+                        }
             }
         }
 
@@ -26,7 +30,6 @@ pipeline {
 
                 stage('it-tests') {
                     steps {
-                        unstash 'src'
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                         sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Darquillian.container=wildfly:8.2.0.Final:managed'
                         livingDocs()
@@ -35,7 +38,6 @@ pipeline {
 
                 stage('ft-tests') {
                     steps {
-                        unstash 'src'
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
                         sh 'mvn test -Pft-tests -Darquillian.container=wildfly:10.1.0.Final:managed -Darquillian.port-offset=120 -Darquillian.port=10110'
                     }
