@@ -37,7 +37,7 @@ pipeline {
                     steps {
                         unstash 'src'
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
-                        sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
+                        sh 'mvn test -Pft-tests -Darquillian.container=wildfly:10.1.0.Final:managed -Darquillian.port-offset=120 -Darquillian.port=10110'
                     }
                 }
             }
