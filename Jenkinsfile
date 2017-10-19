@@ -39,7 +39,7 @@ pipeline {
                 sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
                 withSonarQubeEnv('sonar') {
                      sh 'mvn sonar:sonar'
-
+                }
                 livingDocs()
             }
         }
