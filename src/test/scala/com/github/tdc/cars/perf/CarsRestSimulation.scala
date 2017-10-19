@@ -21,8 +21,8 @@ class CarRestSimulation extends Simulation {
   var initialUsersPerScenario = 1
   var scenarioDurationInSeconds = 10 //2 users per second
   var expectedMaxResponseTime = 850
-  var expected99thPercentileResponseTime=1200
-  var expectedPercentileResponseTime=120
+  var expected99thPercentileMeanResponseTime=1200
+  var expectedPercentileMeanResponseTime=120
   var expectedMeanResponseTime = 80
   var expectedRequestPerSecond = 18
 
@@ -147,10 +147,10 @@ class CarRestSimulation extends Simulation {
     .assertions(
       global.successfulRequests.percent.greaterThan(95),
       global.responseTime.mean.lessThan(expectedMeanResponseTime),
-      global.responseTime.percentile1.lessThan(expectedPercentileResponseTime),
-      global.responseTime.percentile2.lessThan(expectedPercentileResponseTime),
-      global.responseTime.percentile3.lessThan(expectedPercentileResponseTime),
-      global.responseTime.percentile4.lessThan(expected99thPercentileResponseTime),
+      global.responseTime.percentile1.lessThan(c),
+      global.responseTime.percentile2.lessThan(expectedPercentileMeanResponseTime),
+      global.responseTime.percentile3.lessThan(expectedPercentileMeanResponseTime),
+      global.responseTime.percentile4.lessThan(expected99thPercentileMeanResponseTime),
       global.requestsPerSec.greaterThan(expectedRequestPerSecond)
 
     )
