@@ -1,11 +1,11 @@
 pipeline {
     agent any
     stages {
-       /* stage('Checkout') {
-            steps {
-                git 'https://github.com/rmpestano/tdc-cars.
-            }
-        }*/
+        /* stage('Checkout') {
+             steps {
+                 git 'https://github.com/rmpestano/tdc-cars.
+             }
+         }*/
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
@@ -58,25 +58,29 @@ pipeline {
 
         stage('perf-tests') {
             steps {
-                sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-cars/'
-                gatlingArchive()
+                script {
+                    try {
+                        sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-cars/'
+                    } finally {
+                        gatlingArchive()
+                    }
+                }
             }
         }
-    }
 
-      post {
+        post {
             always {
                 lastChanges()
             }
             success {
-                    slackSend channel: '#builds',
-                              color: 'good',
-                              message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
+                slackSend channel: '#builds',
+                    color: 'good',
+                    message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
             }
             failure {
                 slackSend channel: '#builds',
-                          color: 'danger',
-                          message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
+                    color: 'danger',
+                    message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
             }
         }
-}
+    }
