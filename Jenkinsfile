@@ -28,7 +28,7 @@ pipeline {
                     steps {
                         unstash 'src'
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090'
+                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Darquillian.container=wildfly:8.2.0.Final:managed'
                         livingDocs()
                     }
                 }
