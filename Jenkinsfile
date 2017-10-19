@@ -18,47 +18,49 @@ pipeline {
 
             parallel {*/
 
-                stage('unit-tests') {
-                    steps {
-                        sh 'mvn test'
-                        withSonarQubeEnv('sonar') {
-                            sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
-                          }
-                    }
+        stage('unit-tests') {
+            steps {
+                sh 'mvn test'
+                withSonarQubeEnv('sonar') {
+                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
                 }
+            }
+        }
 
-                stage('it-tests') {
-                    /*agent {
-                        docker {
-                            image 'maven:3.3.9-alpine'
-                            args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
-                        }
-                    }*/
-                    steps {
-                        sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-                        sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-                        livingDocs()
-                    }
+        stage('it-tests') {
+            /*agent {
+                docker {
+                    image 'maven:3.3.9-alpine'
+                    args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
                 }
+            }*/
+            steps {
+                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
+                sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
+                livingDocs()
+            }
+        }
 
-                stage('ft-tests') {
-                    steps {
-                        sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
-                        sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.container=wildfly:10.1.0.Final:managed'
-                    }
-                }
-           /* }
+        stage('ft-tests') {
+            steps {
+                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
+                sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.container=wildfly:10.1.0.Final:managed'
+            }
+        }
+        /* }
 
          }*/
 
-         stage("Quality Gate") {
-           timeout(time: 20, unit: 'MINUTES') {
-             def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-             if (result.status != 'OK') {
-               error "Pipeline aborted due to quality gate failure: ${result.status}"
-               }
-             }
-          }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 20, unit: 'MINUTES') {
+                    def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                    if (result.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${result.status}"
+                    }
+                }
+            }
+        }
 
         stage('migrations') {
             steps {
