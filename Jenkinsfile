@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh 'mvn test'
                 withSonarQubeEnv('sonar') {
-                    sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar'
+                    sh 'mvn sonar:sonar'
                 }
             }
         }
@@ -37,6 +37,9 @@ pipeline {
             steps {
                 sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                 sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
+                withSonarQubeEnv('sonar') {
+                     sh 'mvn sonar:sonar'
+
                 livingDocs()
             }
         }
