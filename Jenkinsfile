@@ -13,10 +13,10 @@ pipeline {
             }
         }
 
-        stage('tests') {
+        /*stage('tests') {
             failFast true
 
-            parallel {
+            parallel {*/
 
                 stage('unit-tests') {
                     steps {
@@ -44,9 +44,9 @@ pipeline {
                         sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.container=wildfly:10.1.0.Final:managed'
                     }
                 }
-            }
+           /* }
 
-        }
+         }*/
 
         stage('migrations') {
             steps {
