@@ -9,11 +9,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-                  archiveArtifacts {
-                            pattern('/**/*')
-                            pattern('/**/*')
-                            onlyIfSuccessful()
-                        }
+                archiveArtifacts artifacts: '**/src/*', fingerprint: true
             }
         }
 
