@@ -38,6 +38,7 @@ pipeline {
                      sh 'mvn sonar:sonar'
                 }
                 livingDocs()
+                sh 'mvn jacoco:report -Pcoverage'
             }
         }
 
