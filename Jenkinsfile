@@ -20,10 +20,7 @@ pipeline {
 
         stage('unit-tests') {
             steps {
-                sh 'mvn test'
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn sonar:sonar'
-                }
+                sh 'mvn test -Pcoverage'
             }
         }
 
@@ -40,11 +37,6 @@ pipeline {
                 withSonarQubeEnv('sonar') {
                      sh 'mvn sonar:sonar'
                 }
-                
-                def qualitygate = waitForQualityGate()
-                      if (qualitygate.status != "OK") {
-                         error "Pipeline aborted due to quality gate coverage failure: ${qualitygate.status}"
-                      }
                 livingDocs()
             }
         }
@@ -59,7 +51,7 @@ pipeline {
 
          }*/
 
-        stage("Quality Gate") {
+       /* stage("Quality Gate") {
             steps {
                 timeout(time: 20, unit: 'MINUTES') {
                     script {
@@ -72,7 +64,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
         stage('migrations') {
             steps {
