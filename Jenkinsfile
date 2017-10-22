@@ -21,6 +21,7 @@ pipeline {
                 stage('unit-tests') {
                     steps {
                         sh 'mvn test -Pcoverage'
+                        stash includes: '*/**', name: 'unit' //save becase of coverage reusage in it-tests stages
                     }
                 }
 
@@ -33,7 +34,8 @@ pipeline {
                 }*/
                 steps {
                     dir('it-tests') {
-                        unstash 'src'
+                        sh 'rm -r'
+                        unstash 'unit'
                         sh "ls -la ${pwd()}"
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                         sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
@@ -41,7 +43,7 @@ pipeline {
                         withSonarQubeEnv('sonar') {
                             sh 'mvn sonar:sonar'
                         }
-                        livingDocs(featuuresDir: 'target')
+                        livingDocs(featuresDir: 'target')
 
                     }
 
