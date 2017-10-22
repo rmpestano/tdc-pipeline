@@ -41,7 +41,7 @@ pipeline {
                         withSonarQubeEnv('sonar') {
                             sh 'mvn sonar:sonar'
                         }
-                        livingDocs()
+                        livingDocs(featuuresDir: 'target')
 
                     }
 
@@ -74,7 +74,7 @@ pipeline {
                     }
                 }
             }
-        } 
+        }
 
         stage('deploy to QA') {
             steps {
@@ -82,7 +82,7 @@ pipeline {
                     unstash 'src'
                     sh "ls -la ${pwd()}"
                     sh 'docker stop tdc-cars-qa || true && docker rm tdc-cars-qa || true'
-                    sh 'mvn clean package flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
+                    sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
                     sh 'docker build -t tdc-cars-qa .'
                     sh 'docker run --name tdc-cars-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-cars-qa &'
                 }                
