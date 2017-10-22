@@ -9,7 +9,7 @@ pipeline {
              stage('build') {
                 steps {
                     sh 'mvn clean package -DskipTests'
-                    stash includes: '*/**', name: 'src'
+                    stash includes: 'src/**, pom.xml, Dockerfile', name: 'src'
                 }
             }
 
@@ -21,7 +21,7 @@ pipeline {
                 stage('unit-tests') {
                     steps {
                         sh 'mvn test -Pcoverage'
-                        stash includes: '*/**', name: 'unit' //save becase of coverage reusage in it-tests stages
+                        stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit' //save because of coverage re usage in it-tests stage
                     }
                 }
 
@@ -92,6 +92,7 @@ pipeline {
         }
 
         stage('Go to production?') {
+            agent none
             steps {
                 script {
                     timeout(time: 1, unit: 'DAYS') {
