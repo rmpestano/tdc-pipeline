@@ -61,91 +61,91 @@ pipeline {
 
         }*/
 
-        /* stage("Quality Gate") {
-             steps {
-                 timeout(time: 20, unit: 'MINUTES') {
-                     script {
+        stage("Quality Gate") {
+           steps {
+            timeout(time: 10, unit: 'MINUTES') {
+                   script {
                          def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
                          if (result.status != 'OK') {
-                             error "Pipeline aborted due to quality gate failure: ${result.status}"
-                         } else {
+                           error "Pipeline aborted due to quality gate failure: ${result.status}"
+                           } else {
                             echo "Quality gate passed with result: ${result.status}"
-                         }
-                     }
-                 }
-             }
-             } */
-
-             stage('deploy to QA') {
-                steps {
-                    dir("QA") {
-                        unstash 'src'
-                        sh "ls -la ${pwd()}"
-                        sh 'docker stop tdc-cars-qa || true && docker rm tdc-cars-qa || true'
-                        sh 'mvn clean package flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
-                        sh 'docker build -t tdc-cars-qa .'
-                        sh 'docker run --name tdc-cars-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-cars-qa &'
-                    }                
-                }
-            }
-
-            stage('Go to production?') {
-                steps {
-                    script {
-                        timeout(time: 1, unit: 'DAYS') {
-                            input message: 'Approve deployment?'
                         }
                     }
                 }
             }
+        } 
 
-            stage('migrations') {
-                steps {
-                    sh 'docker stop tdc-cars || true && docker rm tdc-cars || true'
-                    sh 'mvn flyway:repair flyway:migrate -P migrations'
-                }
+        stage('deploy to QA') {
+            steps {
+                dir("QA") {
+                    unstash 'src'
+                    sh "ls -la ${pwd()}"
+                    sh 'docker stop tdc-cars-qa || true && docker rm tdc-cars-qa || true'
+                    sh 'mvn clean package flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
+                    sh 'docker build -t tdc-cars-qa .'
+                    sh 'docker run --name tdc-cars-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-cars-qa &'
+                }                
             }
+        }
 
-            stage('deploy to production') {
-                steps {
-                    sh 'docker build -t rmpestano/tdc-cars .'
-                    sh 'docker run --name tdc-cars -p 8181:8080 -v ~/db:/opt/jboss/db tdc-cars &'
-                }
-            }
-
-            stage('smoke-tests') {
-                steps {
-                    sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-cars/rest/health'
-                }
-            }
-
-            stage('perf-tests') {
-                steps {
-                    script {
-                        try {
-                            sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-cars/'
-                            } finally {
-                                gatlingArchive()
-                            }
-                        }
+        stage('Go to production?') {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'DAYS') {
+                        input message: 'Approve deployment?'
                     }
-                }
-
-            }
-
-            post {
-                always {
-                    lastChanges()
-                }
-                success {
-                    slackSend channel: '#builds',
-                    color: 'good',
-                    message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
-                }
-                failure {
-                    slackSend channel: '#builds',
-                    color: 'danger',
-                    message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
                 }
             }
         }
+
+        stage('migrations') {
+            steps {
+                sh 'docker stop tdc-cars || true && docker rm tdc-cars || true'
+                sh 'mvn flyway:repair flyway:migrate -P migrations'
+            }
+        }
+
+        stage('deploy to production') {
+            steps {
+                sh 'docker build -t rmpestano/tdc-cars .'
+                sh 'docker run --name tdc-cars -p 8181:8080 -v ~/db:/opt/jboss/db tdc-cars &'
+            }
+        }
+
+        stage('smoke-tests') {
+            steps {
+                sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-cars/rest/health'
+            }
+        }
+
+        stage('perf-tests') {
+            steps {
+                script {
+                    try {
+                        sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-cars/'
+                        } finally {
+                            gatlingArchive()
+                        }
+                    }
+                }
+            }
+
+        }
+
+        post {
+            always {
+                lastChanges()
+            }
+            success {
+                slackSend channel: '#builds',
+                color: 'good',
+                message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
+            }
+            failure {
+                slackSend channel: '#builds',
+                color: 'danger',
+                message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
+            }
+        }
+    }
