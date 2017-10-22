@@ -34,7 +34,7 @@ pipeline {
                 }*/
                 steps {
                     dir('it-tests') {
-                        sh 'rm -r'
+                        //sh 'rm -r *'
                         unstash 'unit'
                         sh "ls -la ${pwd()}"
                         sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
