@@ -13,10 +13,10 @@ pipeline {
                 }
             }
 
-        /*stage('tests') {
+        stage('tests') {
             failFast true
 
-            parallel {*/
+            parallel {
 
                 stage('unit-tests') {
                     steps {
@@ -59,9 +59,9 @@ pipeline {
                     }
                 }
             }
-        /* }
+         }
 
-        }*/
+        }
 
         stage("Quality Gate") {
            steps {
