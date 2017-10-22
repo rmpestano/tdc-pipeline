@@ -82,7 +82,7 @@ pipeline {
             }
         }
 
-        stages('Go to production?') {
+        stage('Go to production?') {
             steps {
                 script {
                     timeout(time: 1, unit: 'DAYS') {
