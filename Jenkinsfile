@@ -9,7 +9,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-                archiveArtifacts artifacts: '**/*', fingerprint: true
+                stash includes: '*/**', name: 'src'
             }
         }
 
@@ -32,40 +32,65 @@ pipeline {
                 }
             }*/
             steps {
-                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-                sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-                withSonarQubeEnv('sonar') {
-                     sh 'mvn sonar:sonar'
+                dir('it-tests') {
+                    unstash 'src'
+                    sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
+                    sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
+                    withSonarQubeEnv('sonar') {
+                        sh 'mvn sonar:sonar'
+                    }
+                    livingDocs()
                 }
-                livingDocs()
-                sh 'mvn jacoco:report -Pcoverage'
+
             }
         }
 
         stage('ft-tests') {
             steps {
-                sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
-                sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.container=wildfly:10.1.0.Final:managed'
+                dir('ft-tests') {
+                    unstash 'src'
+                    sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
+                    sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.container=wildfly:10.1.0.Final:managed'
+                }
             }
         }
         /* }
 
          }*/
 
-       /* stage("Quality Gate") {
+        /* stage("Quality Gate") {
+             steps {
+                 timeout(time: 20, unit: 'MINUTES') {
+                     script {
+                         def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                         if (result.status != 'OK') {
+                             error "Pipeline aborted due to quality gate failure: ${result.status}"
+                         } else {
+                            echo "Quality gate passed with result: ${result.status}"
+                         }
+                     }
+                 }
+             }
+         } */
+
+        stage('deploy to QA') {
             steps {
-                timeout(time: 20, unit: 'MINUTES') {
-                    script {
-                        def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                        if (result.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${result.status}"
-                        } else {
-                           echo "Quality gate passed with result: ${result.status}"
-                        }
+                sh 'docker stop tdc-cars-qa || true && docker rm tdc-cars-qa || true'
+                sh 'mvn flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
+                sh 'docker build -t tdc-cars-qa .'
+                sh 'docker run --name tdc-cars-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-cars-qa &'
+            }
+        }
+
+        stages('Go to production?') {
+            steps {
+                script {
+                    timeout(time: 1, unit: 'DAYS') {
+                        input message: 'Approve deployment?'
                     }
                 }
             }
-        } */
+        }
 
         stage('migrations') {
             steps {
@@ -74,7 +99,7 @@ pipeline {
             }
         }
 
-        stage('deploy') {
+        stage('deploy to production') {
             steps {
                 sh 'docker build -t rmpestano/tdc-cars .'
                 sh 'docker run --name tdc-cars -p 8181:8080 -v ~/db:/opt/jboss/db tdc-cars &'

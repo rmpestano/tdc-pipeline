@@ -19,7 +19,6 @@
         <db.path>~/db</db.path>
         <db.name>cars</db.name>
         <db.username>sa</db.username>
-        <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
     </properties>
 
     <dependencies>
@@ -432,6 +431,8 @@
             <properties>
                 <jacoco.version>0.7.9</jacoco.version>
                 <jacoco.destFile>jacoco</jacoco.destFile>
+                <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+                <sonar.exclusions>**/*MB.java,**/HealthCheck.java,**/Lists.java</sonar.exclusions>
             </properties>
             <build>
                 <plugins>
