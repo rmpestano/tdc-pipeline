@@ -9,7 +9,7 @@ pipeline {
              stage('build') {
                 steps {
                     sh 'mvn clean package -DskipTests'
-                    stash includes: 'src/**, pom.xml, Dockerfile', name: 'src'
+                    stash includes: 'src/**, pom.xml, Dockerfile, docker/**', name: 'src'
                 }
             }
 
