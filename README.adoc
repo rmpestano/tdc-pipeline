@@ -114,3 +114,43 @@ Perf tests use Gatling tool, https://gatling.io[see it's web site^] to get an id
 ----
 mvn clean gatling:execute -Pperf
 ----
+
+== Running the pipeline
+
+This application comes with a https://jenkins.io/doc/book/pipeline/syntax/[Jenkins declarative pipeline^]. Below are the step to run the pipeline locally.
+
+
+=== Jenkins
+
+First thing that is needed is a Jenkins instance, http://mirrors.jenkins.io/war-stable/latest/jenkins.war[download Jenkins here^] and start it on port `8080` using Java:
+
+----
+java -jar jenkins.war
+----
+
+
+=== Docker
+
+This pipeline depends on Docker, install it according to your operating system https://docs.docker.com/engine/installation[as described here].
+
+TIP: look for Docker CE (community edition).
+
+TIP: To run docker without sudo https://askubuntu.com/questions/477551/how-can-i-use-docker-without-sudo[look here^].
+
+=== Sonar
+
+The pipeline depends on ht[tps://www.sonarqube.org/Sonar^], you need to have an Sonar instance running on `http://localhost:9000`.
+
+An easy way to start Sonar locally is just running it's docker container:
+
+----
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts
+----
+
+=== Configure slack
+
+This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with Slack, here are the steps:
+
+. Install slack plugin on your Jenkins: https://wiki.jenkins.io/display/JENKINS/Slack+Plugin
+. Create a Slack channel
+
