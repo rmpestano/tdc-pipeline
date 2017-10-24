@@ -179,7 +179,7 @@ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts
 
 Finally configure Sonar on Jenkins (http://localhost:8080/configure):
 
-image:sonar[]
+image:sonar.png[]
 
 === Configure slack
 
