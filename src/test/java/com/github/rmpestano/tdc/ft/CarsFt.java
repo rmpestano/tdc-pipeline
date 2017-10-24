@@ -120,6 +120,8 @@ public class CarsFt {
     public void shouldFilterByModel() {
         carList.filterByModel("model 8");
         waitModel(webDriver).until().element(By.cssSelector("ul.ui-autocomplete-items")).is().not().visible();
+        waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
+                .is().not().visible();
         assertThat(carList.getTableRows().get(0).getText()).contains("model 8");
     }
 
