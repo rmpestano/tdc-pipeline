@@ -132,14 +132,14 @@ java -jar jenkins.war
 ====
 It was tested with `jenkins 2.73.2` with following plugins installed:
 
-* Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or above^]) [Note that it already comes with Jenkins, you may have to upgrade]
-* Pipeline declarative (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or above^]) [Note that it already comes with Jenkins, you may have to upgrade]
-* Last Changes (http://updates.jenkins-ci.org/latest/last-changes.hpi[link to download^])
-* Cucumber living documentation (http://updates.jenkins-ci.org/latest/cucumber-living-documentation.hpi[link to download^])
-* Gatling (http://updates.jenkins-ci.org/latest/gatling.hpi[link to download^])
-* Slack (http://updates.jenkins-ci.org/latest/slack.hpi[link to download^])
-* Sonar (http://updates.jenkins-ci.org/latest/sonar.hpi[link to download^])
-* Quality gates (http://updates.jenkins-ci.org/latest/quality-gates.hpi[link to download^])
+* Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
+* Pipeline declarative (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
+* Last Changes (http://updates.jenkins-ci.org/download/plugins/last-changes/1.0.11/last-changes.hpi[v1.0.11 or greater^])
+* Cucumber living documentation (http://updates.jenkins-ci.org/download/plugins/cucumber-living-documentation/1.0.12/cucumber-living-documentation.hpi[v1.0.12 or greater^])
+* Gatling (http://updates.jenkins-ci.org/download/plugins/gatling/1.2.2/gatling.hpi[v1.2.2 or greater^])
+* Slack (http://updates.jenkins-ci.org/download/plugins/slack/2.3/slack.hpi[v2.3 or greater^])
+* Sonar (http://updates.jenkins-ci.org/download/plugins/sonar/2.6.1/sonar.hpi[v2.6.1 or greater^])
+* Quality gates (http://updates.jenkins-ci.org/download/plugins/quality-gates/2.5/quality-gates.hpi[v2.5 or greater^])
 
 ====
 
