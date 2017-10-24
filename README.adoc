@@ -145,7 +145,7 @@ java -jar jenkins.war
 
 [NOTE]
 ====
-It was tested with `jenkins 2.73.2` with following plugins installed:
+It was tested with `Jenkins 2.73.2` with following plugins installed:
 
 * Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
 * Pipeline declarative (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
@@ -199,6 +199,16 @@ NOTE: Use https://join.slack.com/t/tdc-java/shared_invite/enQtMjYxNDk1NDcwNzg5LW
 For more details on how to integrate your own slack channel and Jenkins see https://support.cloudbees.com/hc/en-us/articles/226460047-How-do-I-configure-Slack-Plugin-[this simple (5 steps) tutorial^].
 
 
+=== Create the pipeline job
+
+. Create a http://localhost:8080/view/all/newJob[new job^];
+. Chose `pipeline` and give a name;
+. On job config check `Do not allow concurrent builds` option on *General* section;
+. On *Build Triggers* section Check `pool scm` and use `* * * * *` as value;
+. Finally on *Pipeline* section select option `Pipeline script from scm`, chose `GIT` and use this url: http://github.com/rmpestano/tdc-pipeline;
+
+After saving job configuration the pipeline should run on next minutes.
+ 
 === Demo
 
 Following is a demo video showing this pipeline:
