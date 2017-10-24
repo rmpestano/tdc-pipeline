@@ -432,7 +432,7 @@
                 <jacoco.version>0.7.9</jacoco.version>
                 <jacoco.destFile>jacoco</jacoco.destFile>
                 <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.coverage.exclusions>**/*MB.java,**/HealthCheck.java,**/Lists.java</sonar.coverage.exclusions>
+                <sonar.exclusions>**/*MB.java,**/HealthCheck.java,**/Lists.java</sonar.exclusions>
             </properties>
             <build>
                 <plugins>
@@ -457,9 +457,9 @@
                         <configuration>
                             <destFile>target/${jacoco.destFile}.exec</destFile>
                             <excludes>
-                                <exclude>com/github/rmpestano/tdc/cars/bean/*.class</exclude>
-                                <exclude>com/github/rmpestano/tdc/cars/bean/rest/HealthCheck.class</exclude>
-                                <exclude>com/github/rmpestano/tdc/cars/model/*.class</exclude>
+                                <exclude>com/github/rmpestano/tdc/pipeline/bean/*.class</exclude>
+                                <exclude>com/github/rmpestano/tdc/pipeline/bean/rest/HealthCheck.class</exclude>
+                                <exclude>com/github/rmpestano/tdc/pipeline/model/*.class</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
