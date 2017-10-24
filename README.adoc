@@ -183,10 +183,8 @@ image:sonar.png[]
 
 === Configure slack
 
-This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with Slack, here are the steps:
+This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with Slack. See https://support.cloudbees.com/hc/en-us/articles/226460047-How-do-I-configure-Slack-Plugin-[this simple (5 steps) tutorial^].
 
-. Install slack plugin on your Jenkins: https://wiki.jenkins.io/display/JENKINS/Slack+Plugin
-. Create a Slack channel
 
 === Demo
 
