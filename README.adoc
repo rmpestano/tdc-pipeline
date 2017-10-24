@@ -183,7 +183,20 @@ image:sonar.png[]
 
 === Configure slack
 
-This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with Slack. See https://support.cloudbees.com/hc/en-us/articles/226460047-How-do-I-configure-Slack-Plugin-[this simple (5 steps) tutorial^].
+This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with the https://wiki.jenkins.io/display/JENKINS/Slack+Plugin[Slack plugin^].
+
+In http://localhost:8080/configure[Jenkins configuration^] search for Slack `Outgoing Webhook Token` and use the token below: 
+ 
+----
+SyQ9NWKGoEorB1g9h2h5xUuy
+----
+
+This token will configure jenkins to send messages to the following slack channel: https://tdc-java.slack.com/messages/C7L0N9V0B
+
+NOTE: Use https://join.slack.com/t/tdc-java/shared_invite/enQtMjYxNDk1NDcwNzg5LWYyODdjMDQxZDgyMzNkMmUyYmQ2NzA2NWQ3YjI1NjBiYjk2YzYxNzUyYTRhMDg2MDI2N2Q3ZDVlYjRhM2U0NzE [this invitation link^] to join the channel above. 
+
+
+For more details on how to integrate your own slack channel and Jenkins see https://support.cloudbees.com/hc/en-us/articles/226460047-How-do-I-configure-Slack-Plugin-[this simple (5 steps) tutorial^].
 
 
 === Demo
