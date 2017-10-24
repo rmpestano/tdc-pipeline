@@ -21,6 +21,8 @@ image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link
 
 Sample application for JavaEE Pipeline as code using Jenkins, Sonar and Docker presentation.
 
+image:go-to-prod.png[]
+
 
 == Running the application
 
@@ -134,6 +136,8 @@ mvn clean gatling:execute -Pperf
 
 This application comes with a https://jenkins.io/doc/book/pipeline/syntax/[Jenkins declarative pipeline^]. Below are the step to run the pipeline locally.
 
+WARNING: At least 8GB of RAM is needed on the host machine, 16GB is recommended. 
+
 
 === Jenkins
 
@@ -177,9 +181,17 @@ An easy way to start Sonar locally is just running it's docker container:
 docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts
 ----
 
-Finally configure Sonar on Jenkins (http://localhost:8080/configure):
+Configure Sonar on Jenkins (http://localhost:8080/configure):
 
 image:sonar.png[]
+
+And finally configure the *quality gates* on same configuration page:
+
+image:sonar-quality-gates.png[]
+
+TIP: Quality gates can `fail` a pipeline if it doesn't reach the quality gates conditions, feel free to test on http://localhost:9000/quality_gates/show/1[your sonar instance here^].
+
+TIP: To change quality profiles you need to log in with `admin/admin` user.
 
 === Configure slack
 
@@ -202,13 +214,41 @@ For more details on how to integrate your own slack channel and Jenkins see http
 === Create the pipeline job
 
 . Create a http://localhost:8080/view/all/newJob[new job^];
-. Chose `pipeline` and give a name;
+. Chose `pipeline` and give *tdc-pipeline* as name;
 . On job config check `Do not allow concurrent builds` option on *General* section;
 . On *Build Triggers* section Check `pool scm` and use `* * * * *` as value;
 . Finally on *Pipeline* section select option `Pipeline script from scm`, chose `GIT` and use this url: http://github.com/rmpestano/tdc-pipeline;
 
 After saving job configuration the pipeline should run on next minutes.
- 
+
+NOTE: There is an (manual) aprovall step before "going to production". 
+
+=== After pipeline execution
+
+The pipekine will genrate a lot of evidences about the quality of the build:
+
+. Sonar analisys along with code coverage can be viewed on http://localhost:9000/dashboard/index?id=com.github.rmpestano%3Atdc-pipeline
++
+image:sonar-report.png[]
+. Each build VCS diff can be browsed on http://localhost:8080/job/tdc-pipeline/last-changes
+. Cucumber living documentation at http://localhost:8080/job/tdc-pipeline/cucumber-living-documentation
+. Performance tests report http://localhost:8080/job/tdc-pipeline/gatling
+
+[NOTE]
+====
+`Last changes`, `Living docs` and `Gatling reports` will be available at *job level* (http://localhost:8080/job/tdc-pipeline) if the last pipeline succeeds. For failed pipelines you need to access *build level*, e.g: http://localhost:8080/job/tdc-pipeline/17/last-changes/ (ee 17 is the build number).
+
+image:pipeline-reports.png[]
+
+====
+
+Two docker containers will be started during the pipeline, one representing the application deployment on `QA` environment and another which is `production`:
+
+image:containers.png[]
+
+For *QA* the app should be available at http://localhost:8282/tdc-pipeline. In `Prod` env the application is available on port http://localhost:8181/tdc-pipeline.  
+
+
 === Demo
 
 Following is a demo video showing this pipeline:
