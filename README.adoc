@@ -1,4 +1,19 @@
 = TDC Pipeline
+:page-layout: base
+:toc: preamble
+:source-language: java
+:icons: font
+:linkattrs:
+:sectanchors:
+:sectlink:
+:numbered:
+:imagesdir: img
+:doctype: book
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
 
 image:https://travis-ci.org/rmpestano/tdc-pipeline.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/tdc-pipeline]
 image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link=https://coveralls.io/r/rmpestano/tdc-pipeline]
@@ -161,6 +176,10 @@ An easy way to start Sonar locally is just running it's docker container:
 ----
 docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts
 ----
+
+Finally configure Sonar on Jenkins (http://localhost:8080/configure):
+
+img::sonar[]
 
 === Configure slack
 
