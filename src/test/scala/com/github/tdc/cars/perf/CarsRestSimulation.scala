@@ -1,5 +1,5 @@
 
-package com.github.rmpestano.tdc.cars.perf
+package com.github.rmpestano.tdc.pipeline.perf
 
 import java.util.UUID
 

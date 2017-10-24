@@ -1,8 +1,8 @@
 package com.github.rmpestano.tdc.unit;
 
 import com.github.adminfaces.template.exception.BusinessException;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.service.CarService;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

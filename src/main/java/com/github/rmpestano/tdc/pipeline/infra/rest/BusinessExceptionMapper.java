@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.rest;
+package com.github.rmpestano.tdc.pipeline.infra.rest;
 
 import com.github.adminfaces.template.exception.BusinessException;
 
@@ -7,9 +7,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.github.adminfaces.template.util.Assert.has;
 

@@ -1,10 +1,10 @@
-package com.github.rmpestano.tdc.cars.bean;
+package com.github.rmpestano.tdc.pipeline.bean;
 
 import com.github.adminfaces.persistence.bean.CrudMB;
 import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.persistence.service.Service;
-import com.github.rmpestano.tdc.cars.service.CarService;
-import com.github.rmpestano.tdc.cars.model.Car;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
+import com.github.rmpestano.tdc.pipeline.model.Car;
 import com.github.adminfaces.template.exception.BusinessException;
 import org.omnifaces.cdi.ViewScoped;
 

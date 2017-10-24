@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.rest;
+package com.github.rmpestano.tdc.pipeline.infra.rest;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

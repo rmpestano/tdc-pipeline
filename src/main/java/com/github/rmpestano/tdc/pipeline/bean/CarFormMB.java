@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.rmpestano.tdc.cars.bean;
+package com.github.rmpestano.tdc.pipeline.bean;
 
 import com.github.adminfaces.persistence.bean.BeanService;
 import com.github.adminfaces.persistence.bean.CrudMB;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.service.CarService;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
 import org.omnifaces.cdi.ViewScoped;
 import org.omnifaces.util.Faces;
 

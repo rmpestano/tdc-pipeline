@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.rest;
+package com.github.rmpestano.tdc.pipeline.rest;
 
 
 import javax.annotation.Resource;

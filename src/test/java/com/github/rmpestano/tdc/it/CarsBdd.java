@@ -1,10 +1,10 @@
 package com.github.rmpestano.tdc.it;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
-import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
-import com.github.rmpestano.tdc.cars.service.CarService;
+import com.github.rmpestano.tdc.pipeline.infra.security.LogonMB;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.model.Car_;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
 import com.github.rmpestano.tdc.util.Deployments;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;

@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.rest;
+package com.github.rmpestano.tdc.pipeline.infra.rest;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 

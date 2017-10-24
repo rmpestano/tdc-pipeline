@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.security;
+package com.github.rmpestano.tdc.pipeline.infra.security;
 
 import com.github.adminfaces.template.exception.AccessDeniedException;
 import com.github.adminfaces.template.session.AdminSession;

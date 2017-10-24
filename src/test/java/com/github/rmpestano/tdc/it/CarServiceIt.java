@@ -6,10 +6,10 @@ import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.persistence.service.Service;
 import com.github.adminfaces.template.exception.AccessDeniedException;
 import com.github.adminfaces.template.exception.BusinessException;
-import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
-import com.github.rmpestano.tdc.cars.service.CarService;
+import com.github.rmpestano.tdc.pipeline.infra.security.LogonMB;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.model.Car_;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
 import com.github.rmpestano.tdc.util.Deployments;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -25,7 +25,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.security;
+package com.github.rmpestano.tdc.pipeline.infra.security;
 
 import java.io.IOException;
 import java.io.Serializable;

@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.persistence;
+package com.github.rmpestano.tdc.pipeline.infra.persistence;
 
 
 import javax.enterprise.context.ApplicationScoped;

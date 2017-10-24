@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.bean;
+package com.github.rmpestano.tdc.pipeline.bean;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;

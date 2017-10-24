@@ -1,9 +1,9 @@
-package com.github.rmpestano.tdc.cars.bean;
+package com.github.rmpestano.tdc.pipeline.bean;
 
 import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.persistence.service.Service;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.model.Car_;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;

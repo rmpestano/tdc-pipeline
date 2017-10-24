@@ -1,11 +1,11 @@
-package com.github.rmpestano.tdc.cars.rest;
+package com.github.rmpestano.tdc.pipeline.rest;
 
 
 import com.github.adminfaces.persistence.model.Filter;
-import com.github.rmpestano.tdc.cars.infra.security.RestSecured;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
-import com.github.rmpestano.tdc.cars.service.CarService;
+import com.github.rmpestano.tdc.pipeline.infra.security.RestSecured;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.model.Car_;
+import com.github.rmpestano.tdc.pipeline.service.CarService;
 
 import javax.inject.Inject;
 import javax.persistence.NoResultException;

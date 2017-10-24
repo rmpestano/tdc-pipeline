@@ -1,4 +1,4 @@
-package com.github.rmpestano.tdc.cars.infra.security;
+package com.github.rmpestano.tdc.pipeline.infra.security;
 
 /**
  * Created by rmpestano on 12/20/14.
@@ -12,6 +12,6 @@ import java.lang.annotation.*;
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Documented
 @SecurityBindingType
-public @interface Guest {
+public @interface Admin {
 
 }

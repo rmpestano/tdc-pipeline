@@ -4,7 +4,7 @@ import com.github.adminfaces.template.exception.AccessDeniedException;
 import com.github.adminfaces.template.exception.BusinessException;
 import com.github.adminfaces.template.session.AdminSession;
 import com.github.adminfaces.template.util.Assert;
-import com.github.rmpestano.tdc.cars.infra.security.LogonMB;
+import com.github.rmpestano.tdc.pipeline.infra.security.LogonMB;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
@@ -36,7 +36,7 @@ public class Deployments {
             name = UUID.randomUUID().toString() +".war";
         }
         WebArchive war = ShrinkWrap.create(WebArchive.class,name);
-        war.addPackages(true, "com.github.rmpestano.tdc.cars");
+        war.addPackages(true, "com.github.rmpestano.tdc.pipeline");
         war.addClasses(BusinessException.class, Assert.class, AccessDeniedException.class, LogonMB.class, AdminSession.class);
         //LIBS
         MavenResolverSystem resolver = Maven.resolver();

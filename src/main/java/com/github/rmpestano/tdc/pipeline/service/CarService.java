@@ -2,14 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.rmpestano.tdc.cars.service;
+package com.github.rmpestano.tdc.pipeline.service;
 
 import com.github.adminfaces.persistence.model.Filter;
 import com.github.adminfaces.persistence.service.CrudService;
 import com.github.adminfaces.template.exception.BusinessException;
-import com.github.rmpestano.tdc.cars.infra.security.Admin;
-import com.github.rmpestano.tdc.cars.model.Car;
-import com.github.rmpestano.tdc.cars.model.Car_;
+import com.github.rmpestano.tdc.pipeline.infra.security.Admin;
+import com.github.rmpestano.tdc.pipeline.model.Car;
+import com.github.rmpestano.tdc.pipeline.model.Car_;
 import org.apache.deltaspike.data.api.criteria.Criteria;
 
 import javax.ejb.Stateless;
