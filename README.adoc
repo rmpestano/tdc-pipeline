@@ -185,7 +185,7 @@ image:sonar.png[]
 
 This pipeline is integrated with https://slack.com/[slack^]. You'll need to configure your Jenkins instance to work with the https://wiki.jenkins.io/display/JENKINS/Slack+Plugin[Slack plugin^].
 
-In http://localhost:8080/configure[Jenkins configuration^] search for Slack `Outgoing Webhook Token` and use the token below: 
+In http://localhost:8080/configure[Jenkins configuration^] search for `Global Slack Notifier Settings` and set `Integration Token` using the token below: 
  
 ----
 SyQ9NWKGoEorB1g9h2h5xUuy
