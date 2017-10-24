@@ -1,10 +1,10 @@
-= TDC Cars
+= TDC Pipeline
 
 image:https://travis-ci.org/rmpestano/tdc-pipeline.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/tdc-pipeline]
 image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link=https://coveralls.io/r/rmpestano/tdc-pipeline]
 
 
-Sample application for JavaEE Pipeline as code presentation.
+Sample application for JavaEE Pipeline as code using Jenkins, Sonar and Docker presentation.
 
 
 == Running the application
