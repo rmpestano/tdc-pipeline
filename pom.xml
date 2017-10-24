@@ -432,7 +432,7 @@
                 <jacoco.version>0.7.9</jacoco.version>
                 <jacoco.destFile>jacoco</jacoco.destFile>
                 <sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-                <sonar.exclusions>**/*MB.java,**/HealthCheck.java,**/Lists.java</sonar.exclusions>
+                <sonar.coverage.exclusions>**/*MB.java,**/HealthCheck.java,**/Lists.java</sonar.coverage.exclusions>
             </properties>
             <build>
                 <plugins>
