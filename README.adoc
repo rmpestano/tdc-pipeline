@@ -132,6 +132,8 @@ java -jar jenkins.war
 ====
 It was tested with `jenkins 2.73.2` with following plugins installed:
 
+* Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or above^]) [Note that it already comes with Jenkins, you may have to upgrade]
+* Pipeline declarative (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or above^]) [Note that it already comes with Jenkins, you may have to upgrade]
 * Last Changes (http://updates.jenkins-ci.org/latest/last-changes.hpi[link to download^])
 * Cucumber living documentation (http://updates.jenkins-ci.org/latest/cucumber-living-documentation.hpi[link to download^])
 * Gatling (http://updates.jenkins-ci.org/latest/gatling.hpi[link to download^])
