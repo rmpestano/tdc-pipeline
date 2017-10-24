@@ -1,7 +1,7 @@
 = TDC Cars
 
-image:https://travis-ci.org/rmpestano/tdc-cars.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/tdc-cars]
-image:https://coveralls.io/repos/rmpestano/tdc-cars/badge.png[Coverage, link=https://coveralls.io/r/rmpestano/tdc-cars]
+image:https://travis-ci.org/rmpestano/tdc-pipeline.svg[Build Status (Travis CI), link=https://travis-ci.org/rmpestano/tdc-pipeline]
+image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link=https://coveralls.io/r/rmpestano/tdc-pipeline]
 
 
 Sample application for JavaEE Pipeline as code presentation.
@@ -40,20 +40,20 @@ mvn clean package -D db.path=C:/db
 . Now create a docker image using:
 +
 ----
-docker build -t tdc-cars .
+docker build -t tdc-pipeline .
 ----
 
 . And finally run the application:
 +
 ----
-docker run -it --name tdc-cars -p 8080:8080 -v ~/db:/opt/jboss/db tdc-cars
+docker run -it --name tdc-pipeline -p 8080:8080 -v ~/db:/opt/jboss/db tdc-pipeline
 ----
 +
 NOTE: `-v ~/db:/opt/jboss/db` maps our host filesystem database (the one we created with Flyway) to docker container home dir so we can exit the container without losing data.
 +
 NOTE: `/opt/jboss/` is the home dir (`~/`) in wildfly docker container.
 +
-. Access the application at http://localhost:8080/tdc-cars
+. Access the application at http://localhost:8080/tdc-pipeline
 
 == Running tests
 
@@ -128,6 +128,19 @@ First thing that is needed is a Jenkins instance, http://mirrors.jenkins.io/war-
 java -jar jenkins.war
 ----
 
+[NOTE]
+====
+It was tested with `jenkins 2.73.2` with following plugins installed:
+
+* Last Changes (http://updates.jenkins-ci.org/latest/last-changes.hpi[link to download^])
+* Cucumber living documentation (http://updates.jenkins-ci.org/latest/cucumber-living-documentation.hpi[link to download^])
+* Gatling (http://updates.jenkins-ci.org/latest/gatling.hpi[link to download^])
+* Slack (http://updates.jenkins-ci.org/latest/slack.hpi[link to download^])
+* Sonar (http://updates.jenkins-ci.org/latest/sonar.hpi[link to download^])
+* Quality gates (http://updates.jenkins-ci.org/latest/quality-gates.hpi[link to download^])
+
+====
+
 
 === Docker
 
@@ -154,3 +167,6 @@ This pipeline is integrated with https://slack.com/[slack^]. You'll need to conf
 . Install slack plugin on your Jenkins: https://wiki.jenkins.io/display/JENKINS/Slack+Plugin
 . Create a Slack channel
 
+=== Demo
+
+Following is a demo video showing this pipeline:

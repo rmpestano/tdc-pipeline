@@ -3,7 +3,7 @@ pipeline {
     stages {
         /* stage('Checkout') {
              steps {
-                 git 'https://github.com/rmpestano/tdc-cars.
+                 git 'https://github.com/rmpestano/tdc-pipeline.
              }
              }*/
         stage('build') {
@@ -83,10 +83,10 @@ pipeline {
                 dir("QA") {
                     unstash 'src'
                     sh "ls -la ${pwd()}"
-                    sh 'docker stop tdc-cars-qa || true && docker rm tdc-cars-qa || true'
+                    sh 'docker stop tdc-pipeline-qa || true && docker rm tdc-pipeline-qa || true'
                     sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
-                    sh 'docker build -t tdc-cars-qa .'
-                    sh 'docker run --name tdc-cars-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-cars-qa &'
+                    sh 'docker build -t tdc-pipeline-qa .'
+                    sh 'docker run --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa &'
                 }
             }
         }
@@ -104,21 +104,21 @@ pipeline {
 
         stage('migrations') {
             steps {
-                sh 'docker stop tdc-cars || true && docker rm tdc-cars || true'
+                sh 'docker stop tdc-pipeline || true && docker rm tdc-pipeline || true'
                 sh 'mvn flyway:repair flyway:migrate -P migrations'
             }
         }
 
         stage('deploy to production') {
             steps {
-                sh 'docker build -t rmpestano/tdc-cars .'
-                sh 'docker run --name tdc-cars -p 8181:8080 -v ~/db:/opt/jboss/db tdc-cars &'
+                sh 'docker build -t tdc-pipeline .'
+                sh 'docker run --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline &'
             }
         }
 
         stage('smoke-tests') {
             steps {
-                sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-cars/rest/health'
+                sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/rest/health'
             }
         }
 
@@ -126,7 +126,7 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-cars/'
+                        sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/'
                     } finally {
                         gatlingArchive()
                     }

@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build -t rmpestano/tdc-cars ../
+docker build -t tdc-pipeline ../

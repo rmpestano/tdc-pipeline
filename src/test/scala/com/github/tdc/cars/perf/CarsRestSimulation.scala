@@ -30,7 +30,7 @@ class CarRestSimulation extends Simulation {
   var baseUrl = System.getProperty("APP_CONTEXT")
 
    if (baseUrl == null) {
-       baseUrl = "http://localhost:8080/tdc-cars/";
+       baseUrl = "http://localhost:8080/tdc-pipeline/";
     }
 
 
