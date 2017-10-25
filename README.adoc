@@ -36,9 +36,10 @@ All commands below must be executed in project root folder.
 ----
 mvn flyway:migrate -P migrations -D db.path=~/db
 ----
-After that, a file named `cars.h2.db` will be created on your `home/db` folder.
+After that, a file named `cars.h2.db` will be created on your user `home/db` folder.
 +
 NOTE: your user must have write permissions in `~/db` directory.
+
 TIP: If you are on a non unix OS like Windows you must change `db.path` to an existing directory e.g: db.path=C:/db
 . Create application binary with:
 +
@@ -118,7 +119,7 @@ TIP: For `ft tests` the database migration is required to be run every time the 
 
 === Performance tests
 
-Perf tests use Gatling tool, https://gatling.io[see it's web site^] to get an idea if you never head about it.
+Perf tests use https://gatling.io[Gatling tool^].
 
 . Initialize database
 +
@@ -142,7 +143,7 @@ WARNING: At least 8GB of RAM is needed on the host machine, 16GB is recommended.
 
 === Jenkins
 
-First thing that is needed is a Jenkins instance, http://mirrors.jenkins.io/war-stable/latest/jenkins.war[download Jenkins here^] and start it on port `8080` using Java:
+First thing that is needed is a Jenkins instance, http://mirrors.jenkins.io/war-stable/latest/jenkins.war[download Jenkins here^] and start it on port `8080` using:
 
 ----
 java -jar jenkins.war
@@ -174,7 +175,7 @@ TIP: To run docker without `sudo` https://askubuntu.com/questions/477551/how-can
 
 === Sonar
 
-The pipeline depends on ht[tps://www.sonarqube.org/Sonar^], you need to have an Sonar instance running on `http://localhost:9000`.
+The pipeline depends on https://www.sonarqube.org/[Sonar^], you need to have an Sonar instance running on `http://localhost:9000`.
 
 An easy way to start Sonar locally is just running it's docker container:
 
@@ -186,13 +187,14 @@ Configure Sonar on Jenkins (http://localhost:8080/configure):
 
 image:sonar.png[]
 
-And finally configure the *quality gates* on same configuration page:
+=== Quality Gates
+
+Quality gates can `fail` a pipeline if it doesn't reach the Sonar quality gates conditions, for more details https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/[see this post^].
+
+Following is jenkins configuration for quality gates:
 
 image:sonar-quality-gates.png[]
 
-TIP: Quality gates can `fail` a pipeline if it doesn't reach the quality gates conditions, feel free to test on http://localhost:9000/quality_gates/show/1[your sonar instance here^].
-
-TIP: To change quality profiles you need to log in with `admin/admin` user.
 
 === Configure slack
 
