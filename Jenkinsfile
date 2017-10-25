@@ -39,7 +39,7 @@ pipeline {
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
 
-                            stash includes: 'src/**, pom.xml, target/**', name: 'it' //saves it tests artifactcs to be used in 'Quality Gate' stage
+                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves it artifacts to use in 'Quality Gate' stage
 
                             livingDocs(featuresDir: 'target') //living documentation is generated here because bdd tests are executed in this stage
 
@@ -67,14 +67,15 @@ pipeline {
                     unstash 'it'
                     withSonarQubeEnv('sonar') {
                         sh 'mvn sonar:sonar'
-                    }
-                    timeout(time: 10, unit: 'MINUTES') {
-                        script {
-                            def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                            if (result.status != 'OK') {
-                                error "Pipeline aborted due to quality gate failure: ${result.status}"
-                            } else {
-                                echo "Quality gate passed with result: ${result.status}"
+
+                        timeout(time: 5, unit: 'MINUTES') {
+                            script {
+                                def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                                if (result.status != 'OK') {
+                                    error "Pipeline aborted due to quality gate failure: ${result.status}"
+                                } else {
+                                    echo "Quality gate passed with result: ${result.status}"
+                                }
                             }
                         }
                     }
