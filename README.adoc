@@ -25,6 +25,13 @@ image:go-to-prod.png[]
 
 The pipeline code https://github.com/rmpestano/tdc-pipeline/blob/master/Jenkinsfile[can be found here^].
 
+[TIP]
+====
+For pipeline DSL syntax highlight I recomment https://www.sublimetext.com/3[sublime text^] and this package: https://github.com/bjarneo/jenkinsfile-syntax. 
+
+To use it just clone the above git repository into `.config/sublime-text-3/Packages/` and restart sublime.  
+====
+
 == Running the application
 
 IMPORTANT: You need `Docker`, `Maven` and `Java` installed on your machine.
