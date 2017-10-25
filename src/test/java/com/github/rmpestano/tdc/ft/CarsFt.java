@@ -46,7 +46,7 @@ public class CarsFt {
 
     @Deployment(testable = false)
     public static Archive<?> createDeployment() {
-        WebArchive war = Deployments.createDeployment("cars-ft.war");
+        WebArchive war = Deployments.createDeployment("tdc-ft.war");
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-template").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-theme").withoutTransitivity().asSingleFile());
