@@ -135,6 +135,15 @@ Perf tests use https://gatling.io[Gatling tool^].
 ----
 mvn clean gatling:execute -Pperf
 ----
++
+[TIP]
+====
+By default perf tests run against `http://localhost:8080/tdc-pipeline/` but you can change it by passing `APP_CONTEXT` system property:
+
+----
+mvn clean gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/
+----
+====
 
 == Running the pipeline
 
@@ -227,7 +236,7 @@ NOTE: There is an (manual) approval step before "going to production".
 
 The pipeline will generate a lot of evidences about the quality of the build:
 
-. Sonar analysis along with code coverage can be viewed on http://localhost:9000/dashboard/index?id=com.github.rmpestano%3Atdc-pipeline
+. Sonar analysis along with code coverage can be viewed on http://localhost:9000/dashboard/index/com.github.rmpestano:tdc-pipeline
 +
 image:sonar-report.png[]
 . Each build VCS diff can be browsed on http://localhost:8080/job/tdc-pipeline/last-changes
