@@ -147,7 +147,8 @@ public class CarsFt {
                 .element(carList.getConfirmHeader()).is().not().visible();
         carList.filterByModel("model 20");
         waitModel(webDriver).until().element(By.cssSelector("ul.ui-autocomplete-items")).is().not().visible();
-        waitModel();
+        waitModel(webDriver).until().element(By.cssSelector("div.ui-dialog-content img"))
+                .is().not().visible();
         guardHttp(webDriver.findElement(By.cssSelector("td[role=gridcell] a.ui-link"))).click();
         assertThat(carForm.isPresent()).isTrue();
         carForm.getInputModel().clear();
