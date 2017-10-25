@@ -36,7 +36,7 @@ public class CarRestIt {
 
     @Deployment
     public static Archive<?> createDeployment() {
-        WebArchive war = Deployments.createDeployment("tdc-rest-it");
+        WebArchive war = Deployments.createDeployment("tdc-rest-it.war");
         war.addPackage(BusinessException.class.getPackage())
                 .addClass(AdminSession.class);
         MavenResolverSystem resolver = Maven.resolver();
