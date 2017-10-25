@@ -36,11 +36,13 @@ All commands below must be executed in project root folder.
 ----
 mvn flyway:migrate -P migrations -D db.path=~/db
 ----
++
 After that, a file named `cars.h2.db` will be created on your user `home/db` folder.
 +
 NOTE: your user must have write permissions in `~/db` directory.
-
++
 TIP: If you are on a non unix OS like Windows you must change `db.path` to an existing directory e.g: db.path=C:/db
+
 . Create application binary with:
 +
 ----
