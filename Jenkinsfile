@@ -57,15 +57,6 @@ pipeline {
 
         }
 
-        stage("Living docs") {
-             steps {
-                dir("docs") {
-                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
-                    livingDocs(featuresDir: 'target') 
-                }
-            }
-        }
-
         stage("SonarQube analysis") {
             steps {
                 dir("sonar") {
@@ -73,6 +64,15 @@ pipeline {
                     withSonarQubeEnv('sonar') {
                         sh 'mvn sonar:sonar'
                     }
+                }
+            }
+        }
+
+        stage("Living docs") {
+           steps {
+            dir("docs") {
+                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
+                    livingDocs(featuresDir: 'target') 
                 }
             }
         }
