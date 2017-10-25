@@ -171,8 +171,8 @@ java -jar jenkins.war
 ====
 It was tested with `Jenkins 2.73.2` with following plugins installed:
 
-* Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
-* Pipeline declarative (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
+* Pipeline model api (http://updates.jenkins-ci.org/download/plugins/pipeline-model-api/1.2.2/pipeline-model-api.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
+* Pipeline model definition (http://updates.jenkins-ci.org/download/plugins/pipeline-model-definition/1.2.2/pipeline-model-definition.hpi[v1.2.2 or greater^]) [Already comes with Jenkins, you may have to upgrade]
 * Last Changes (http://updates.jenkins-ci.org/download/plugins/last-changes/1.0.11/last-changes.hpi[v1.0.11 or greater^])
 * Cucumber living documentation (http://updates.jenkins-ci.org/download/plugins/cucumber-living-documentation/1.0.12/cucumber-living-documentation.hpi[v1.0.12 or greater^])
 * Gatling (http://updates.jenkins-ci.org/download/plugins/gatling/1.2.2/gatling.hpi[v1.2.2 or greater^])
@@ -249,16 +249,16 @@ The pipeline will generate a lot of evidences about the quality of the build:
 
 . Sonar analysis along with code coverage can be viewed on http://localhost:9000/dashboard/index/com.github.rmpestano:tdc-pipeline
 +
-image:sonar-report.png[]
+image::sonar-report.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/sonar-report.png]
 . Each build VCS diff can be browsed on http://localhost:8080/job/tdc-pipeline/last-changes
 +
-image:vcs-diff.png[]
+image:vcs-diff.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/vcs-diff.png]
 . Cucumber living documentation at http://localhost:8080/job/tdc-pipeline/cucumber-living-documentation
 +
-image:living-docs.png[]
+image:living-docs.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/living-docs.png]
 . Performance tests report http://localhost:8080/job/tdc-pipeline/gatling
 +
-image:perf-reports.png[]
+image:perf-reports.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/perf-reports.png]
 
 [NOTE]
 ====
