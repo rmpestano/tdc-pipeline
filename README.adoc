@@ -213,7 +213,7 @@ Following is *Jenkins configuration* for quality gates:
 
 image:jenkins-quality-gates.png[]
 
-And in *Sonar* you need to enable webhooks in `Administration > Configuration > General Settings > Webhooks.`:
+And in *Sonar* you need to enable webhooks in `Administration > Configuration > General Settings > Webhooks.` using *http://localhost:8080/sonarqube-webhook/* as value:
 
 image:sonar-quality-gates.png[]
 
