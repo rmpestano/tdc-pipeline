@@ -76,7 +76,7 @@ pipeline {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
-                        def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                        def result = waitForQualityGate()  
                         if (result.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${result.status}"
                             } else {

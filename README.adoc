@@ -198,7 +198,7 @@ The pipeline depends on https://www.sonarqube.org/[Sonar^], you need to have an 
 An easy way to start Sonar locally is just running it's docker container:
 
 ----
-docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:lts
+docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:6.6
 ----
 
 Configure Sonar on Jenkins (http://localhost:8080/configure):
@@ -209,7 +209,11 @@ image:sonar.png[]
 
 Quality gates can `fail` a pipeline if it doesn't reach the Sonar quality gates conditions, for more details https://blog.sonarsource.com/breaking-the-sonarqube-analysis-with-jenkins-pipelines/[see this post^].
 
-Following is jenkins configuration for quality gates:
+Following is *Jenkins configuration* for quality gates:
+
+image:jenkins-quality-gates.png[]
+
+And in *Sonar* you need to enable webhooks in `Administration > Configuration > General Settings > Webhooks.`:
 
 image:sonar-quality-gates.png[]
 
