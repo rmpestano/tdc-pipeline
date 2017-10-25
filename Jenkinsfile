@@ -38,10 +38,6 @@ pipeline {
                             unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-
-                            livingDocs(featuresDir: 'target') //living documentation is generated here because bdd tests are executed in this stage
-
-
                             stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves 'it' artifacts to use in 'Quality Gate' stage
                         }
 
@@ -59,6 +55,15 @@ pipeline {
                 }
             }
 
+        }
+
+        stage("Living docs") {
+             steps {
+                dir("docs") {
+                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
+                    livingDocs(featuresDir: 'target') 
+                }
+            }
         }
 
         stage("SonarQube analysis") {
