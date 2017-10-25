@@ -9,7 +9,7 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-                stash includes: 'src/**, pom.xml, Dockerfile, docker/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
+                stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**' name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
             }
         }
 
@@ -34,8 +34,8 @@ pipeline {
                         }*/
                     steps {
                         dir('it-tests') {
-                            //sh 'rm -r *'
-                            unstash 'unit'
+                            sh 'rm -r *'
+                            unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
 
@@ -51,6 +51,7 @@ pipeline {
                 stage('ft-tests') {
                     steps {
                         dir('ft-tests') {
+                            sh 'rm -r *'
                             unstash 'src'
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
                             sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
