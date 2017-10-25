@@ -223,18 +223,24 @@ NOTE: There is an (manual) approval step before "going to production".
 
 === After pipeline execution
 
-The pipekine will genrate a lot of evidences about the quality of the build:
+The pipeline will generate a lot of evidences about the quality of the build:
 
-. Sonar analisys along with code coverage can be viewed on http://localhost:9000/dashboard/index?id=com.github.rmpestano%3Atdc-pipeline
+. Sonar analysis along with code coverage can be viewed on http://localhost:9000/dashboard/index?id=com.github.rmpestano%3Atdc-pipeline
 +
 image:sonar-report.png[]
 . Each build VCS diff can be browsed on http://localhost:8080/job/tdc-pipeline/last-changes
++
+image:vcs-diff.png[]
 . Cucumber living documentation at http://localhost:8080/job/tdc-pipeline/cucumber-living-documentation
++
+image:living-docs.png[]
 . Performance tests report http://localhost:8080/job/tdc-pipeline/gatling
++
+image:perf-reports.png[]
 
 [NOTE]
 ====
-`Last changes`, `Living docs` and `Gatling reports` will be available at *job level* (http://localhost:8080/job/tdc-pipeline) if the last pipeline succeeds. For failed pipelines you need to access *build level*, e.g: http://localhost:8080/job/tdc-pipeline/17/last-changes/ (ee 17 is the build number).
+`Last changes`, `Living docs` and `Gatling reports` will be available at *job level* (http://localhost:8080/job/tdc-pipeline) if at least one pipeline succeeds. For failed pipelines you need to access *build level*, e.g: http://localhost:8080/job/tdc-pipeline/17/last-changes/ (where `17` is the build number).
 
 image:pipeline-reports.png[]
 
