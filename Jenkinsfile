@@ -1,7 +1,7 @@
 pipeline {
     agent any
     stages {
-        /* stage('Checkout') {
+        /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
              steps {
                  git 'https://github.com/rmpestano/tdc-pipeline.
              }
@@ -9,19 +9,19 @@ pipeline {
         stage('build') {
             steps {
                 sh 'mvn clean package -DskipTests'
-                stash includes: 'src/**, pom.xml, Dockerfile, docker/**', name: 'src'
+                stash includes: 'src/**, pom.xml, Dockerfile, docker/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
             }
         }
 
         stage('unit-tests') {
             steps {
                 sh 'mvn test -Pcoverage'
-                stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit' //save because of coverage re usage in it-tests stage
+                stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit' //save because of coverage re usage in 'it-tests' stage
             }
         }
 
-        stage('tests') {
-            failFast true
+        stage('Parallel tests') {
+            failFast true // first to fail abort parallel execution
 
             parallel {
 
@@ -36,14 +36,12 @@ pipeline {
                         dir('it-tests') {
                             //sh 'rm -r *'
                             unstash 'unit'
-                            sh "ls -la ${pwd()}"
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-                            sh "ls -la ${pwd()}"
-                            withSonarQubeEnv('sonar') {
-                                sh 'mvn sonar:sonar'
-                            }
-                            livingDocs(featuresDir: 'target')
+
+                            stash includes: 'src/**, pom.xml, target/**', name: 'it' //saves it tests artifactcs to be used in 'Quality Gate' stage
+
+                            livingDocs(featuresDir: 'target') //living documentation is generated here because bdd tests are executed in this stage
 
                         }
 
@@ -63,28 +61,33 @@ pipeline {
 
         }
 
-        stage("Quality Gate") {
+        stage("Quality gate") {
             steps {
-                timeout(time: 10, unit: 'MINUTES') {
-                    script {
-                        def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
-                        if (result.status != 'OK') {
-                            error "Pipeline aborted due to quality gate failure: ${result.status}"
-                        } else {
-                            echo "Quality gate passed with result: ${result.status}"
+                dir("gates") {
+                    unstash 'it'
+                    withSonarQubeEnv('sonar') {
+                        sh 'mvn sonar:sonar'
+                    }
+                    timeout(time: 10, unit: 'MINUTES') {
+                        script {
+                            def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+                            if (result.status != 'OK') {
+                                error "Pipeline aborted due to quality gate failure: ${result.status}"
+                            } else {
+                                echo "Quality gate passed with result: ${result.status}"
+                            }
                         }
                     }
                 }
             }
         }
 
-        stage('deploy to QA') {
+        stage('Deploy to QA') {
             steps {
                 dir("QA") {
-                    unstash 'src'
-                    sh "ls -la ${pwd()}"
+                    unstash 'src' //uses the same source from first stage
                     sh 'docker stop tdc-pipeline-qa || true && docker rm tdc-pipeline-qa || true'
-                    sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
+                    sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa' //needs to rebuild because 'db.name' is different
                     sh 'docker build -t tdc-pipeline-qa .'
                     sh 'docker run --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa &'
                 }
@@ -102,27 +105,27 @@ pipeline {
             }
         }
 
-        stage('migrations') {
+        stage('Migrations') {
             steps {
                 sh 'docker stop tdc-pipeline || true && docker rm tdc-pipeline || true'
                 sh 'mvn flyway:repair flyway:migrate -P migrations'
             }
         }
 
-        stage('deploy to production') {
+        stage('Deploy to production') {
             steps {
                 sh 'docker build -t tdc-pipeline .'
                 sh 'docker run --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline &'
             }
         }
 
-        stage('smoke-tests') {
+        stage('Smoke tests') {
             steps {
                 sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/rest/health'
             }
         }
 
-        stage('perf-tests') {
+        stage('Perf tests') {
             steps {
                 script {
                     try {
