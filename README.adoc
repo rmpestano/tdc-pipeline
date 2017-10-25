@@ -154,7 +154,7 @@ mvn clean gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-pipelin
 
 == Running the pipeline
 
-This application comes with a https://jenkins.io/doc/book/pipeline/syntax/[Jenkins declarative pipeline^]. Below are the step to run the pipeline locally.
+This application comes with a https://jenkins.io/doc/book/pipeline/syntax/[Jenkins declarative pipeline^]. Below are the steps to run the pipeline locally.
 
 WARNING: At least 8GB of RAM is needed on the host machine, 16GB is recommended. 
 
