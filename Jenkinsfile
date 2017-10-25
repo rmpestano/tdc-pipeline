@@ -6,9 +6,9 @@ pipeline {
                  git 'https://github.com/rmpestano/tdc-pipeline.
              }
              }*/
-        stage('build') {
-            steps {
-                sh 'mvn clean package -DskipTests'
+             stage('build') {
+                steps {
+                    sh 'mvn clean package -DskipTests'
                 stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
             }
         }
@@ -32,8 +32,8 @@ pipeline {
                             args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
                         }
                         }*/
-                    steps {
-                        dir('it-tests') {
+                        steps {
+                            dir('it-tests') {
                             //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
                             unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
@@ -42,7 +42,7 @@ pipeline {
                             livingDocs(featuresDir: 'target') //living documentation is generated here because bdd tests are executed in this stage
 
 
-                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves it artifacts to use in 'Quality Gate' stage
+                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves 'it' artifacts to use in 'Quality Gate' stage
                         }
 
                     }
@@ -61,31 +61,36 @@ pipeline {
 
         }
 
-        stage("Quality gate") {
+        stage("SonarQube analysis") {
             steps {
-                dir("gates") {
+                dir("sonar") {
                     unstash 'it'
                     withSonarQubeEnv('sonar') {
                         sh 'mvn sonar:sonar'
                     }
                 }
+            }
+        }
 
+        stage("Quality Gate") {
+            steps {
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
                         def result = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
                         if (result.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${result.status}"
-                        } else {
-                            echo "Quality gate passed with result: ${result.status}"
+                            } else {
+                                echo "Quality gate passed with result: ${result.status}"
+                            }
                         }
                     }
+
                 }
             }
-        }
 
-        stage('Deploy to QA') {
-            steps {
-                dir("QA") {
+            stage('Deploy to QA') {
+                steps {
+                    dir("QA") {
                     unstash 'src' //uses the same source from first stage
                     sh 'docker stop tdc-pipeline-qa || true && docker rm tdc-pipeline-qa || true'
                     sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa' //needs to rebuild because 'db.name' is different
@@ -131,28 +136,28 @@ pipeline {
                 script {
                     try {
                         sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/'
-                    } finally {
-                        gatlingArchive()
+                        } finally {
+                            gatlingArchive()
+                        }
                     }
                 }
             }
+
         }
 
-    }
-
-    post {
-        always {
-            lastChanges()
-        }
-        success {
-            slackSend channel: '#builds',
+        post {
+            always {
+                lastChanges()
+            }
+            success {
+                slackSend channel: '#builds',
                 color: 'good',
                 message: "${currentBuild.fullDisplayName} *succeeded*. (<${env.BUILD_URL}|Open>)"
-        }
-        failure {
-            slackSend channel: '#builds',
+            }
+            failure {
+                slackSend channel: '#builds',
                 color: 'danger',
                 message: "${currentBuild.fullDisplayName} *failed*. (<${env.BUILD_URL}|Open>)"
+            }
         }
     }
-}
