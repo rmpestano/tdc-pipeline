@@ -39,10 +39,10 @@ pipeline {
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
 
-                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves it artifacts to use in 'Quality Gate' stage
-
                             livingDocs(featuresDir: 'target') //living documentation is generated here because bdd tests are executed in this stage
 
+
+                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves it artifacts to use in 'Quality Gate' stage
                         }
 
                     }
