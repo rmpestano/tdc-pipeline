@@ -1,7 +1,10 @@
 pipeline {
     agent any
+    triggers {
+        pollSCM('* * * * *')
+    }
     stages {
-        /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
+        /*stage('Checkout') { //not needed because we checkout pipeline from SCM 
              steps {
                  git 'https://github.com/rmpestano/tdc-pipeline.
              }
@@ -34,7 +37,7 @@ pipeline {
                         }*/
                         steps {
                             dir('it-tests') {
-                            //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
+                            //sh 'rm -r *' do not clear folder to not remove arquillian server cache
                             unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
@@ -71,7 +74,7 @@ pipeline {
         stage("Living docs") {
            steps {
             dir("docs") {
-                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
+                    unstash 'it' //loads 'it' folder because bdd artifacts are generated in 'it' stage 
                     livingDocs(featuresDir: 'target') 
                 }
             }
@@ -79,7 +82,7 @@ pipeline {
 
         stage("Quality Gate") {
             steps {
-                sh 'sleep 5'
+                sh 'sleep 5' //need otherwise quality gates hangs, try to remove this in futures q-gates releases
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
                         def result = waitForQualityGate()  
@@ -109,11 +112,7 @@ pipeline {
         stage('Go to production?') {
             agent none
             steps {
-                script {
-                    timeout(time: 1, unit: 'DAYS') {
-                        input message: 'Approve deployment?'
-                    }
-                }
+                input message: 'Deploy?'
             }
         }
 
