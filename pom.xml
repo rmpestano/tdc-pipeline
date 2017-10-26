@@ -313,7 +313,7 @@
                             </execution>
                         </executions>
                         <configuration>
-                            <url>jdbc:h2:file:${db.path}/${db.name};MV_STORE=FALSE</url>
+                            <url>jdbc:h2:file:${db.path}/${db.name};MV_STORE=FALSE;DB_CLOSE_ON_EXIT=FALSE</url>
                             <user>${db.username}</user>
                             <password>${db.username}</password>
                             <locations>

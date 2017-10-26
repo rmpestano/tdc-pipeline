@@ -133,12 +133,12 @@ class CarRestSimulation extends Simulation {
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     ),
     addCarsScenario.inject(
-      atOnceUsers(5),
-      rampUsers(5) over(8 seconds),
+      atOnceUsers(3),
+      rampUsers(6) over(8 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     ),
     deleteCarsScenario.inject(
-      atOnceUsers(5),
+      atOnceUsers(3),
       rampUsers(5) over(5 seconds),
       rampUsersPerSec(initialUsersPerScenario) to (totalUsersPerScenario) during(scenarioDurationInSeconds seconds)
     )
