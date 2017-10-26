@@ -146,7 +146,7 @@ class CarRestSimulation extends Simulation {
   )
     .protocols(httpProtocol)
     .assertions(
-      global.successfulRequests.percent.greaterThan(95),
+      global.successfulRequests.percent.greaterThan(90),
       global.responseTime.mean.lessThan(expectedMeanResponseTime),
       global.responseTime.percentile1.lessThan(expectedPercentileResponseTime),
       global.responseTime.percentile2.lessThan(expectedPercentileResponseTime),
