@@ -112,7 +112,7 @@ pipeline {
         stage('Go to production?') {
             agent none
             steps {
-                input message: 'Deploy?'
+                input message: 'Approve deployment?'
             }
         }
 
