@@ -72,7 +72,7 @@ pipeline {
         }
 
         stage("Living docs") {
-           steps {
+         steps {
             dir("docs") {
                     unstash 'it' //loads 'it' folder because bdd artifacts are generated in 'it' stage 
                     livingDocs(featuresDir: 'target') 
