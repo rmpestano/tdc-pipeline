@@ -21,7 +21,7 @@ image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link
 
 Sample application for JavaEE Pipeline as code using Jenkins, Sonar and Docker presentation.
 
-image:go-to-prod.png[]
+image:go-to-prod.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/go-to-prod.png]
 
 The pipeline code https://github.com/rmpestano/tdc-pipeline/blob/master/Jenkinsfile[can be found here^].
 
