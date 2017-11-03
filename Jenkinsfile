@@ -1,10 +1,13 @@
 pipeline {
     agent any
-    triggers {
-        pollSCM('* * * * *')
+
+    tools {
+        maven "maven3.3.9"
+        jdk "java8"
     }
+    
     stages {
-        /*stage('Checkout') { //not needed because we checkout pipeline from SCM 
+        /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
              steps {
                  git 'https://github.com/rmpestano/tdc-pipeline.
              }
@@ -12,7 +15,7 @@ pipeline {
              stage('build') {
                 steps {
                     sh 'mvn clean package -DskipTests'
-                stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
+                    stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
             }
         }
 
@@ -37,7 +40,7 @@ pipeline {
                         }*/
                         steps {
                             dir('it-tests') {
-                            //sh 'rm -r *' do not clear folder to not remove arquillian server cache
+                            //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
                             unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
@@ -72,9 +75,9 @@ pipeline {
         }
 
         stage("Living docs") {
-         steps {
+           steps {
             dir("docs") {
-                    unstash 'it' //loads 'it' folder because bdd artifacts are generated in 'it' stage 
+                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
                     livingDocs(featuresDir: 'target') 
                 }
             }
@@ -82,7 +85,6 @@ pipeline {
 
         stage("Quality Gate") {
             steps {
-                sh 'sleep 5' //need otherwise quality gates hangs, try to remove this in futures q-gates releases
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
                         def result = waitForQualityGate()  
@@ -112,7 +114,11 @@ pipeline {
         stage('Go to production?') {
             agent none
             steps {
-                input message: 'Approve deployment?'
+                script {
+                    timeout(time: 1, unit: 'DAYS') {
+                        input message: 'Approve deployment?'
+                    }
+                }
             }
         }
 
