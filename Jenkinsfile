@@ -1,11 +1,7 @@
 pipeline {
     agent any
 
-    tools {
-        maven "maven3.3.9"
-        jdk "java8"
-    }
-    
+     
     stages {
         /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
              steps {
