@@ -134,6 +134,7 @@ pipeline {
 
         stage('Smoke tests') {
             steps {
+                sh 'sleep 5s'
                 sh 'mvn test -Psmoke-tests -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/rest/health'
             }
         }
