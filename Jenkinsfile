@@ -3,21 +3,17 @@ pipeline {
 
 
     stages {
-        /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
-             steps {
-                 git 'https://github.com/rmpestano/tdc-pipeline.
-             }
-             }*/
-             stage('build') {
-                steps {
-                    sh 'mvn clean package -DskipTests'
-                    stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
-            }
-        }
 
-        stage('unit-tests') {
-            steps {
-                sh 'mvn test -Pcoverage'
+       stage('build') {
+        steps {
+            sh 'mvn clean package -DskipTests'
+                    stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
+                }
+            }
+
+            stage('unit-tests') {
+                steps {
+                    sh 'mvn test -Pcoverage'
                 stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit' //save because of coverage re usage in 'it-tests' stage
             }
         }
@@ -71,7 +67,7 @@ pipeline {
         }
 
         stage("Living docs") {
-           steps {
+         steps {
             dir("docs") {
                     unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
                     livingDocs(featuresDir: 'target') 
@@ -81,6 +77,7 @@ pipeline {
 
         stage("Quality Gate") {
             steps {
+                sh 'sleep 5s'
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
                         def result = waitForQualityGate()  
