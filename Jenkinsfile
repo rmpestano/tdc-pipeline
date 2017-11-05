@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-     
+
     stages {
         /* stage('Checkout') { //not needed because we checkout pipeline from SCM 
              steps {
@@ -134,7 +134,7 @@ pipeline {
 
         stage('Smoke tests') {
             steps {
-                sh 'mvn test -Psmoke -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/rest/health'
+                sh 'mvn test -Psmoke-tests -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/rest/health'
             }
         }
 

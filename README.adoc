@@ -182,6 +182,25 @@ It was tested with `Jenkins 2.73.2` with following plugins installed:
 
 ====
 
+==== Jenkins on docker
+
+There is also a https://github.com/rmpestano/docker-jenkins[jenkins docker container^] with above plugins installed, here is how to run it:
+
+----
+docker run -it --name jenkins -p 8080:8080 -v "$HOME/.m2":/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker --net="host" -v ~/.jenkins:/var/jenkins_home rmpestano/jenkins
+----
+
+IMPORTANT: Above setup (`Docker`, `Sonar` and `Slack` is still needed).
+
+[WARNING]
+====
+When running the pipeline on docker *`ft-tests` stage will fail* because it needs chrome on docker, to make it pass you need to run ft-tests with `phantomjs`:
+
+----
+mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.browser=phantomjs
+----
+
+====
 
 === Docker
 
