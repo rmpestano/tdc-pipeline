@@ -190,7 +190,7 @@ There is also a https://github.com/rmpestano/docker-jenkins[jenkins docker conta
 docker run -it --name jenkins -p 8080:8080 -v "$HOME/.m2":/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker --net="host" -v ~/.jenkins:/var/jenkins_home rmpestano/jenkins
 ----
 
-IMPORTANT: Above setup (`Docker`, `Sonar` and `Slack` is still needed).
+IMPORTANT: <<Docker>>, <<Sonar>>, <<Quality Gates>> and <<Configure slack, Slack>> setup is still needed.
 
 [WARNING]
 ====
