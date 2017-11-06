@@ -155,11 +155,12 @@ pipeline {
                 lastChanges()
                 notify(currentBuild.result)
             }
-            success {
+            
+           /* success {
 
             }
             failure {
 
-            }
+            }*/
         }
     }
