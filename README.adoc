@@ -29,7 +29,9 @@ The pipeline code https://github.com/rmpestano/tdc-pipeline/blob/master/Jenkinsf
 ====
 For pipeline DSL syntax highlight I recomment https://www.sublimetext.com/3[sublime text^] and this package: https://github.com/bjarneo/jenkinsfile-syntax. 
 
-To use it just clone the above git repository into `.config/sublime-text-3/Packages/` and restart sublime.  
+To use it just clone the above git repository into `.config/sublime-text-3/Packages/` and restart sublime.
+
+OR use https://gist.github.com/arehmandev/736daba40a3e1ef1fbe939c6674d7da8[IntelliJ with GDSL^].
 ====
 
 == Running the application
