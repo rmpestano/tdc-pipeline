@@ -187,7 +187,7 @@ It was tested with `Jenkins 2.73.2` with following plugins installed:
 
 === Shared library
 
-This pipeline have an https://github.com/rmpestano/tdc-pipeline/blob/master/vars/notify.groovy[example of shared library^]. Configure `https://github.com/rmpestano/tdc-pipeline` as a shared lib on your Jenkins like in image below:
+This pipeline have an https://github.com/rmpestano/tdc-pipeline/blob/master/vars/notify.groovy[example of shared library^]. Configure `https://github.com/rmpestano/tdc-pipeline` as a shared lib on `Jenkins > Configure system > Global Pipeline Libraries` like in image below:
 
 image:shared-lib.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/shared-lib.png]
 
