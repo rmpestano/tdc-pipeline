@@ -189,6 +189,8 @@ It was tested with `Jenkins 2.73.2` with following plugins installed:
 
 This pipeline have an https://github.com/rmpestano/tdc-pipeline/blob/master/vars/notify.groovy[example of shared library^]. Configure `https://github.com/rmpestano/tdc-pipeline` as a shared lib on `Jenkins > Configure system > Global Pipeline Libraries` like in image below:
 
+NOTE: The name must be `notify`, it's the name of the function we invoke in https://github.com/rmpestano/tdc-pipeline/blob/a56134d792ff9686333820f24b1aa9e4e0a4d05e/Jenkinsfile#L156[pipeline here^].
+
 image:shared-lib.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/shared-lib.png]
 
 More details on pipeline shared libs, https://jenkins.io/doc/book/pipeline/shared-libraries/[look here^].
@@ -204,7 +206,7 @@ TIP: To run docker without `sudo` https://askubuntu.com/questions/477551/how-can
 
 === Sonar
 
-The pipeline depends on https://www.sonarqube.org/[Sonar^], you need to have an Sonar instance running on `http://localhost:9000`.
+The pipeline depends on https://www.sonarqube.org/[Sonar^], you need to have a Sonar instance running on `http://localhost:9000`.
 
 An easy way to start Sonar locally is just running it's docker container:
 
