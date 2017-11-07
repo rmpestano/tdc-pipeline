@@ -184,25 +184,15 @@ It was tested with `Jenkins 2.73.2` with following plugins installed:
 
 ====
 
-==== Jenkins on docker
 
-There is also a https://github.com/rmpestano/docker-jenkins[jenkins docker container^] with above plugins installed, here is how to run it:
+=== Shared library
 
-----
-docker run -it --name jenkins -p 8080:8080 -v "$HOME/.m2":/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker --net="host" -v ~/.jenkins:/var/jenkins_home rmpestano/jenkins
-----
+This pipeline have an https://github.com/rmpestano/tdc-pipeline/blob/master/vars/notify.groovy[example of shared library^]. Configure `https://github.com/rmpestano/tdc-pipeline` as a shared lib on your Jenkins like in image below:
 
-IMPORTANT: <<Docker>>, <<Sonar>>, <<Quality Gates>> and <<Configure slack, Slack>> setup is still needed.
+image:shared-lib.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/shared-lib.png]
 
-[WARNING]
-====
-When running the pipeline on docker *`ft-tests` stage will fail* because it needs chrome on docker, to make it pass you need to run ft-tests with `phantomjs`:
+More details on pipeline shared libs, https://jenkins.io/doc/book/pipeline/shared-libraries/[look here^].
 
-----
-mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.browser=phantomjs
-----
-
-====
 
 === Docker
 
@@ -224,7 +214,7 @@ docker run -d --name sonarqube -p 9000:9000 -p 9092:9092 sonarqube:6.6
 
 Configure Sonar on Jenkins (http://localhost:8080/configure):
 
-image:sonar.png[]
+image:sonar.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/sonar.png]
 
 === Quality Gates
 
@@ -232,7 +222,7 @@ Quality gates can `fail` a pipeline if it doesn't reach the Sonar quality gates 
 
 Following is *Jenkins configuration* for quality gates:
 
-image:jenkins-quality-gates.png[]
+image:jenkins-quality-gates.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/jenkins-quality-gates.png]
 
 
 === Configure slack
@@ -259,6 +249,26 @@ For more details on how to integrate your own slack channel and Jenkins see http
 After saving job configuration the pipeline should run on next minutes.
 
 NOTE: There is an (manual) approval step before "going to production".
+
+=== Jenkins on docker
+
+There is also a https://github.com/rmpestano/docker-jenkins[jenkins docker container^] with above plugins installed, here is how to run it:
+
+----
+docker run -it --name jenkins -p 8080:8080 -v "$HOME/.m2":/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):/usr/bin/docker --net="host" -v ~/.jenkins:/var/jenkins_home rmpestano/jenkins
+----
+
+IMPORTANT: <<Docker>>, <<Sonar>>, <<Quality Gates>> and <<Configure slack, Slack>> setup described above is still needed.
+
+[WARNING]
+====
+When running the pipeline on docker *`ft-tests` stage will fail* because it needs chrome on docker, to make it pass you need to run ft-tests with `phantomjs`:
+
+----
+mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110 -Darquillian.browser=phantomjs
+----
+
+====
 
 === After pipeline execution
 
