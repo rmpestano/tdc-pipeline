@@ -106,7 +106,7 @@ pipeline {
                     sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
                     //needs to rebuild because 'db.name' is different
                     sh 'docker build -t tdc-pipeline-qa .'
-                    sh 'docker run -d --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa &'
+                    sh 'docker run -d --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa'
                 }
             }
         }
@@ -132,7 +132,7 @@ pipeline {
         stage('Deploy to production') {
             steps {
                 sh 'docker build -t tdc-pipeline .'
-                sh 'docker run -d --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline &'
+                sh 'docker run -d --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline'
             }
         }
 
