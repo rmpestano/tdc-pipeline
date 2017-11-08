@@ -1,20 +1,25 @@
 pipeline {
-    agent any
+    triggers {
+        pollSCM('* * * * *')
+    }
 
+    agent any
 
     stages {
 
-       stage('build') {
-        steps {
-            sh 'mvn clean package -DskipTests'
-                    stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src' // saves sources to avoid rebuild in stages that run in separated dir
-                }
+        stage('build') {
+            steps {
+                sh 'mvn clean package -DskipTests'
+                stash includes: 'src/**, pom.xml, Dockerfile, docker/**, target/**', name: 'src'
+                // saves sources to avoid rebuild in stages that run in separated dir
             }
+        }
 
-            stage('unit-tests') {
-                steps {
-                    sh 'mvn test -Pcoverage'
-                stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit' //save because of coverage re usage in 'it-tests' stage
+        stage('unit-tests') {
+            steps {
+                sh 'mvn test -Pcoverage'
+                stash includes: 'src/**, pom.xml, Dockerfile, target/**', name: 'unit'
+                //save because of coverage re usage in 'it-tests' stage
             }
         }
 
@@ -30,13 +35,14 @@ pipeline {
                             args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
                         }
                         }*/
-                        steps {
-                            dir('it-tests') {
+                    steps {
+                        dir('it-tests') {
                             //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
                             unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
                             sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
                             sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it' //saves 'it' artifacts to use in 'Quality Gate' stage
+                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it'
+                            //saves 'it' artifacts to use in 'Quality Gate' stage
                         }
 
                     }
@@ -67,10 +73,10 @@ pipeline {
         }
 
         stage("Living docs") {
-         steps {
-            dir("docs") {
-                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage 
-                    livingDocs(featuresDir: 'target') 
+            steps {
+                dir("docs") {
+                    unstash 'it' //loads 'it' folder because bdd tests are executed in 'it' stage
+                    livingDocs(featuresDir: 'target')
                 }
             }
         }
@@ -80,26 +86,27 @@ pipeline {
                 sh 'sleep 5s'
                 timeout(time: 5, unit: 'MINUTES') {
                     script {
-                        def result = waitForQualityGate()  
+                        def result = waitForQualityGate()
                         if (result.status != 'OK') {
                             error "Pipeline aborted due to quality gate failure: ${result.status}"
-                            } else {
-                                echo "Quality gate passed with result: ${result.status}"
-                            }
+                        } else {
+                            echo "Quality gate passed with result: ${result.status}"
                         }
                     }
-
                 }
-            }
 
-            stage('Deploy to QA') {
-                steps {
-                    dir("QA") {
+            }
+        }
+
+        stage('Deploy to QA') {
+            steps {
+                dir("QA") {
                     unstash 'src' //uses the same source from first stage
                     sh 'docker stop tdc-pipeline-qa || true && docker rm tdc-pipeline-qa || true'
-                    sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa' //needs to rebuild because 'db.name' is different
+                    sh 'mvn clean package -DskipTests flyway:clean flyway:migrate -P migrations -Ddb.name=cars-qa'
+                    //needs to rebuild because 'db.name' is different
                     sh 'docker build -t tdc-pipeline-qa .'
-                    sh 'docker run -d --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa &'
+                    sh 'docker run -d --name tdc-pipeline-qa -p 8282:8080 -v ~/db:/opt/jboss/db tdc-pipeline-qa'
                 }
             }
         }
@@ -125,7 +132,7 @@ pipeline {
         stage('Deploy to production') {
             steps {
                 sh 'docker build -t tdc-pipeline .'
-                sh 'docker run -d --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline &'
+                sh 'docker run -d --name tdc-pipeline -p 8181:8080 -v ~/db:/opt/jboss/db tdc-pipeline'
             }
         }
 
@@ -141,26 +148,25 @@ pipeline {
                 script {
                     try {
                         sh 'mvn gatling:execute -Pperf -DAPP_CONTEXT=http://localhost:8181/tdc-pipeline/'
-                        } finally {
-                            gatlingArchive()
-                        }
+                    } finally {
+                        gatlingArchive()
                     }
                 }
             }
-
         }
 
-        post {
-            always {
-                lastChanges()
-                notify(currentBuild.result)
-            }
-            
-           /* success {
-
-            }
-            failure {
-
-            }*/
-        }
     }
+
+    post {
+        always {
+            lastChanges()
+            notify(currentBuild.result)
+        }
+        /*success {
+
+        }
+        failure {
+
+        }*/
+    }
+}
