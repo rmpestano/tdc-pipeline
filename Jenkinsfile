@@ -24,6 +24,23 @@ pipeline {
         }
      }
 
+   stage("Quality Gate") {
+        steps {
+            sh 'sleep 12s'
+            timeout(time: 5, unit: 'MINUTES') {
+                script {
+                    def result = waitForQualityGate()
+                    if (result.status != 'OK') {
+                        error "Pipeline aborted due to quality gate failure: ${result.status}"
+                        } else {
+                            echo "Quality gate passed with result: ${result.status}"
+                        }
+                    }
+                }
+
+            }
+   }
+
     stage('Deploy') {
         steps {
             sh 'docker stop tdc-pipeline || true && docker rm tdc-pipeline || true'
