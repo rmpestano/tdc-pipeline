@@ -6,9 +6,23 @@ pipeline {
      stage('build') {
 
         steps {
-            sh 'mvn clean package'
+            sh 'mvn clean package -DskipTests'
         }
     }
+
+   stage('unit-tests') {
+          steps {
+               sh 'mvn test -Pcoverage'
+            }
+        }
+
+   stage("SonarQube analysis") {
+        steps {
+          withSonarQubeEnv('sonar') {
+               sh 'mvn sonar:sonar'
+            }
+        }
+     }
 
     stage('Deploy') {
         steps {
