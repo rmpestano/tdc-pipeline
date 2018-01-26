@@ -23,43 +23,43 @@ pipeline {
             }
         }
 
-        // stage('Parallel tests') {
-        //     failFast true // first to fail abort parallel execution
+        stage('Parallel tests') {
+            failFast true // first to fail abort parallel execution
 
-        //     parallel {
+            parallel {
 
-        //         stage('it-tests') {
-        //             /*agent {
-        //                 docker {
-        //                     image 'maven:3.3.9-alpine'
-        //                     args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
-        //                 }
-        //                 }*/
-        //             steps {
-        //                 dir('it-tests') {
-        //                     //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
-        //                     unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
-        //                     sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
-        //                     sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
-        //                     stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it'
-        //                     //saves 'it' artifacts to use in 'Quality Gate' stage
-        //                 }
+                stage('it-tests') {
+                    /*agent {
+                        docker {
+                            image 'maven:3.3.9-alpine'
+                            args '-v $HOME/.m2:/root/.m2 -v $HOME/db:/root/db'
+                        }
+                        }*/
+                    steps {
+                        dir('it-tests') {
+                            //sh 'rm -r *' do not clear folder to avoid unpacking arquillian server
+                            unstash 'unit' //copy from unit tests because it generates coverage info (jacaco.exec)
+                            sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-test'
+                            sh 'mvn test -Pit-tests -Darquillian.port-offset=100 -Darquillian.port=10090 -Pcoverage -Djacoco.destFile=jacoco-it'
+                            stash includes: 'src/**, pom.xml, target/**', excludes: 'target/server/**', name: 'it'
+                            //saves 'it' artifacts to use in 'Quality Gate' stage
+                        }
 
-        //             }
-        //         }
+                    }
+                }
 
-        //         stage('ft-tests') {
-        //             steps {
-        //                 dir('ft-tests') {
-        //                     unstash 'src'
-        //                     sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
-        //                     sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
-        //                 }
-        //             }
-        //         }
-        //     }
+                stage('ft-tests') {
+                    steps {
+                        dir('ft-tests') {
+                            unstash 'src'
+                            sh 'mvn flyway:clean flyway:migrate -Pmigrations -Ddb.name=cars-ft-test'
+                            sh 'mvn test -Pft-tests -Darquillian.port-offset=120 -Darquillian.port=10110'
+                        }
+                    }
+                }
+            }
 
-        // }
+        }
 
         stage("SonarQube analysis") {
             steps {
