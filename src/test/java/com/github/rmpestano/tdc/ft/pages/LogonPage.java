@@ -30,7 +30,7 @@ public class LogonPage {
         this.email.sendKeys(email);
         this.password.clear();
         this.password.sendKeys(password);
-        guardHttp(btLogon).click();
+        guardAjax(btLogon).click();
     }
 
     public boolean isPresent() {
