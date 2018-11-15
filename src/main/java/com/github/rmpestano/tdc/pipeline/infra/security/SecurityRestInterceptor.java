@@ -3,6 +3,8 @@ package com.github.rmpestano.tdc.pipeline.infra.security;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -12,16 +14,13 @@ import javax.ws.rs.core.FeatureContext;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.ext.Provider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.github.adminfaces.template.exception.AccessDeniedException;
 
 @Provider
 @RestSecured
 public class SecurityRestInterceptor implements ContainerRequestFilter, Serializable, DynamicFeature {
 	
-	  private static final Logger LOG = LoggerFactory.getLogger(SecurityRestInterceptor.class);  
+	  private static final Logger LOG = Logger.getLogger(SecurityRestInterceptor.class.getName());  
 	
 	  @Inject
 	  LogonMB            logonMB;
@@ -37,7 +36,7 @@ public class SecurityRestInterceptor implements ContainerRequestFilter, Serializ
 	    try {
 	      logon();
 	    } catch (Exception e) {
-	      LOG.error("Invalid credentials.", e);
+	      LOG.log(Level.SEVERE, "Invalid credentials.", e);
 	      throw new AccessDeniedException("Invalid credentials.");
 	    }
 	  }

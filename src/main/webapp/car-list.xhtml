@@ -3,7 +3,7 @@
                 xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:adm="http://github.com/adminfaces"
-                template="#{layoutMB.layout}">
+                template="#{layoutMB.template}">
 
     <ui:define name="head-end">
         <style type="text/css">
@@ -26,11 +26,16 @@
                 font-weight: 500;
             }
 
+            .ui-datatable-footer {
+                border: none;
+            }
+
         </style>
     </ui:define>
 
-    <ui:define name="title">
-        Car listing
+  
+  <ui:define name="metadata">
+        <ui:param name="title" value="Car listing"/> <!-- Automatic create breadCrumb and page title when param 'title' is provided. --> 
     </ui:define>
 
     <ui:define name="description">
@@ -38,8 +43,6 @@
     </ui:define>
 
     <ui:define name="body">
-        <adm:breadcrumb title="Car list"/>
-
         <h:form>
             <div class="box box-primary">
                 <div class="box-header with-border">
@@ -99,14 +102,14 @@
 
 
                         <f:facet name="header">
-                            Find Car by id: <p:inputText id="inptId" value="#{carListMB.id}"/>
+                            Find Car by id: <p:inputNumber id="inptId" decimalPlaces="0" value="#{carListMB.id}"/>
                             <p:spacer height="5"/>
                             <p:commandButton id="brFind"
                                              value="Find"
                                              action="#{carListMB.findCarById(carListMB.id)}"
                                              process="@form"
                                              update="@form"
-                                             styleClass="btn-flat bg-black"
+                                             styleClass="btn-flat bg-black btn-states"
                                              partialSubmit="true"/>
                         </f:facet>
                         <p:column selectionMode="multiple" width="5%" styleClass="align-center" priority="3"/>
@@ -151,17 +154,17 @@
                     </p:dataTable>
                 </div>
             </div>
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger">
-                <p:commandButton value="Yes" type="button" styleClass="btn-primary ui-confirmdialog-yes"
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-solid box-danger">
+                <p:commandButton value="Yes" type="button" styleClass="btn-material btn-primary ui-confirmdialog-yes"
                                  icon="fa fa-check"/>
-                <p:commandButton value="No" type="button" styleClass="btn-danger ui-confirmdialog-no"
+                <p:commandButton value="No" type="button" styleClass="btn-material btn-danger ui-confirmdialog-no"
                                  icon="fa fa-close"/>
             </p:confirmDialog>
         </h:form>
 
 
         <p:dialog header="Search cars" widgetVar="searchDialog" height="400" modal="true" appendTo="@(body)"
-                  width="500" responsive="true" styleClass="box-success">
+                  width="500" responsive="true" draggable="false" styleClass="box-success">
 
             <h:form>
                 <p:commandButton value="OK" update="@form @(.ui-datatable, .ui-tooltip)" icon="fa fa-check"
