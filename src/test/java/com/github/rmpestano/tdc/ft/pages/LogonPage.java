@@ -4,7 +4,7 @@ import org.jboss.arquillian.graphene.GrapheneElement;
 import org.jboss.arquillian.graphene.findby.FindByJQuery;
 import org.jboss.arquillian.graphene.page.Location;
 
-import static org.jboss.arquillian.graphene.Graphene.guardHttp;
+import static org.jboss.arquillian.graphene.Graphene.*;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
 @Location("login.xhtml")
