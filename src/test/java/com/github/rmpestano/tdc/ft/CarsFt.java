@@ -50,7 +50,7 @@ public class CarsFt {
         MavenResolverSystem resolver = Maven.resolver();
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-template").withTransitivity().asFile());
         war.addAsLibraries(resolver.loadPomFromFile("pom.xml").resolve("com.github.adminfaces:admin-theme").withoutTransitivity().asSingleFile());
-        war.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class).importDirectory("src/main/webapp").as(GenericArchive.class), "/", Filters.include(".*\\.(xml|xhtml|html|css|js|png|gif)$"));
+        war.merge(ShrinkWrap.create(GenericArchive.class).as(ExplodedImporter.class).importDirectory("src/main/webapp").as(GenericArchive.class), "/", Filters.include(".*\\.(xml|xhtml|html|css|js|jpg|png|gif)$"));
         war.addAsWebInfResource("cars-test-ds.xml", "cars-ds.xml");
         System.out.println(war.toString(true));
         return war;
