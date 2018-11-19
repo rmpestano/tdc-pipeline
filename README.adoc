@@ -19,7 +19,7 @@ image:https://travis-ci.org/rmpestano/tdc-pipeline.svg[Build Status (Travis CI),
 image:https://coveralls.io/repos/rmpestano/tdc-pipeline/badge.png[Coverage, link=https://coveralls.io/r/rmpestano/tdc-pipeline]
 
 
-Sample application for JavaEE Pipeline as code using Jenkins, Sonar and Docker presentation.
+Sample application for JavaEE Pipeline as code using Jenkins, Sonar and Docker presentation. Slides http://rmpestano.github.io/talks/slides/javaee-pipeline/index-en.html#/[available here^].
 
 image:go-to-prod.png[link=https://raw.githubusercontent.com/rmpestano/tdc-pipeline/master/img/go-to-prod.png]
 
